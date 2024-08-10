@@ -1,16 +1,28 @@
 import React from "react";
 
-const BettingArea: React.FC<{ bets: any[] }> = ({ bets }) => {
+const BettingArea: React.FC<{
+  bets: any[];
+  placeBet: (color: string) => void;
+}> = ({ bets, placeBet }) => {
   return (
     <div className="text-white">
       <div className="flex justify-between mb-4">
-        <button className="w-1/3 bg-red-500 py-2 rounded text-center font-bold hover:bg-red-400">
+        <button
+          onClick={() => placeBet("red")}
+          className="w-1/3 bg-red-500 py-2 rounded text-center font-bold hover:bg-red-400"
+        >
           Bet on Red
         </button>
-        <button className="w-1/3 bg-green-500 py-2 rounded text-center font-bold hover:bg-green-400">
+        <button
+          onClick={() => placeBet("green")}
+          className="w-1/3 bg-green-500 py-2 rounded text-center font-bold hover:bg-green-400"
+        >
           Bet on Green
         </button>
-        <button className="w-1/3 bg-black py-2 rounded text-center font-bold hover:bg-gray-700">
+        <button
+          onClick={() => placeBet("black")}
+          className="w-1/3 bg-black py-2 rounded text-center font-bold hover:bg-gray-700"
+        >
           Bet on Black
         </button>
       </div>
