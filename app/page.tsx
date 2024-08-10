@@ -5,6 +5,7 @@ import GameInfo from "../components/GameInfo";
 import RouletteDisplay from "../components/RouletteDisplay";
 import BettingArea from "../components/BettingArea";
 import HistoryArea from "../components/HistoryArea";
+import BettingControl from "@/components/BettingControl";
 
 const HomePage: React.FC = () => {
   const roundNumber = 1234567;
@@ -27,6 +28,10 @@ const HomePage: React.FC = () => {
         <div className="relative w-4/5 mx-auto overflow-hidden mb-8">
           <RouletteDisplay numbers={rouletteNumbers} targetNumber={14} />
         </div>
+        <div className="p-4 bg-gray-900 flex justify-center items-center mb-2">
+          <BettingControl />
+        </div>
+
         <BettingArea bets={bets} />
         <HistoryArea history={history} />
       </main>
