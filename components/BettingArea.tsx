@@ -1,9 +1,10 @@
-import React from "react";
+"use client";
+import React, { memo } from "react";
 
 const BettingArea: React.FC<{
   bets: any[];
   placeBet: (color: string) => void;
-}> = ({ bets, placeBet }) => {
+}> = memo(({ bets, placeBet }) => {
   return (
     <div className="text-white">
       <div className="flex justify-between mb-4">
@@ -63,6 +64,6 @@ const BettingArea: React.FC<{
       </div>
     </div>
   );
-};
+});
 
 export default BettingArea;

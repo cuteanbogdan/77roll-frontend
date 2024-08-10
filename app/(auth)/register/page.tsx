@@ -19,7 +19,7 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
-    const result = await register(email, username, password);
+    const result = await register(email, password, username);
 
     if (result.success) {
       router.push("/");
