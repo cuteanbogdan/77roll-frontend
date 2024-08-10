@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
       <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
         <GameInfo roundNumber={roundNumber} countdown={countdown} />
         <div className="relative w-4/5 mx-auto overflow-hidden mb-8">
-          <RouletteDisplay numbers={rouletteNumbers} />
+          <RouletteDisplay numbers={rouletteNumbers} targetNumber={14} />
         </div>
         <BettingArea bets={bets} />
         <HistoryArea history={history} />

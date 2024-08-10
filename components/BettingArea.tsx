@@ -1,4 +1,3 @@
-// components/BettingArea.tsx
 import React from "react";
 
 const BettingArea: React.FC<{ bets: any[] }> = ({ bets }) => {

@@ -1,4 +1,3 @@
-// components/HistoryArea.tsx
 import React from "react";
 
 const HistoryArea: React.FC<{ history: number[] }> = ({ history }) => {
