@@ -24,12 +24,6 @@ export const useSocketListeners = (
       }
     });
 
-    SocketService.on("new-bet", (newBet: any) => {
-      if (newBet) {
-        dispatch({ type: "ADD_BET", payload: newBet });
-      }
-    });
-
     SocketService.on("all-bets", (allBets: any[]) => {
       if (allBets && allBets.length > 0) {
         dispatch({ type: "SET_BETS", payload: allBets });

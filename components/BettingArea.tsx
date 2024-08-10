@@ -34,7 +34,7 @@ const BettingArea: React.FC<{
             .filter((bet) => bet.color === "red")
             .map((bet, index) => (
               <div key={index} className="flex justify-between">
-                <span>{bet.username}</span>
+                <span>{bet.userId.username}</span>
                 <span>{bet.amount}</span>
               </div>
             ))}
@@ -45,7 +45,7 @@ const BettingArea: React.FC<{
             .filter((bet) => bet.color === "green")
             .map((bet, index) => (
               <div key={index} className="flex justify-between">
-                <span>{bet.username}</span>
+                <span>{bet.userId.username}</span>
                 <span>{bet.amount}</span>
               </div>
             ))}
@@ -56,7 +56,7 @@ const BettingArea: React.FC<{
             .filter((bet) => bet.color === "black")
             .map((bet, index) => (
               <div key={index} className="flex justify-between">
-                <span>{bet.username}</span>
+                <span>{bet.userId.username}</span>
                 <span>{bet.amount}</span>
               </div>
             ))}
