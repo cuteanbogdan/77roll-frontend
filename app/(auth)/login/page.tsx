@@ -1,12 +1,14 @@
 "use client";
+
 import React, { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { login } from "@/handlers/authHandler";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { login } = useAuth();
   const router = useRouter();
 
   const handleLogin = async (event: React.FormEvent) => {
@@ -20,6 +22,7 @@ const LoginPage: React.FC = () => {
       setError(result.message || "An error occurred");
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
       <div className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
@@ -31,36 +34,38 @@ const LoginPage: React.FC = () => {
             {error}
           </div>
         )}
-        <div className="mb-4">
-          <label className="block text-gray-300 mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-gray-300 mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
-          />
-        </div>
-        <button
-          onClick={handleLogin}
-          className="w-full py-2 bg-yellow-500 text-gray-900 font-bold rounded hover:bg-yellow-400 transition duration-200"
-        >
-          Login
-        </button>
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label className="block text-gray-300 mb-2" htmlFor="email">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-300 mb-2" htmlFor="password">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 bg-yellow-500 text-gray-900 font-bold rounded hover:bg-yellow-400 transition duration-200"
+          >
+            Login
+          </button>
+        </form>
       </div>
     </div>
   );
