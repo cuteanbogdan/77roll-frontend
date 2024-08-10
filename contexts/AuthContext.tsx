@@ -3,11 +3,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { checkAuth, login, logout, register } from "@/handlers/authHandler";
-import { AuthResponse } from "@/types/auth";
+import { AuthResponse, User } from "@/types/auth";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
   loading: boolean;
+  user: User | null;
   login: (email: string, password: string) => Promise<AuthResponse>;
   register: (
     email: string,
@@ -15,6 +16,7 @@ interface AuthContextProps {
     username: string
   ) => Promise<AuthResponse>;
   logout: () => void;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>; // Add setUser to the context
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -22,12 +24,14 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const checkUserAuth = async () => {
       const result = await checkAuth();
       setIsAuthenticated(result.isAuthenticated || false);
+      setUser(result.user || null);
       setLoading(false);
     };
 
@@ -67,6 +71,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const result = await logout();
     if (result.success) {
       setIsAuthenticated(false);
+      setUser(null);
       router.push("/login");
     }
   };
@@ -76,9 +81,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         isAuthenticated,
         loading,
+        user,
         login: handleLogin,
         register: handleRegister,
         logout: handleLogout,
+        setUser,
       }}
     >
       {children}

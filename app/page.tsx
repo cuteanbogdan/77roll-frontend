@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import GameInfo from "../components/GameInfo";
@@ -8,21 +9,17 @@ import HistoryArea from "../components/HistoryArea";
 import BettingControl from "@/components/BettingControl";
 import SocketService from "@/services/socketService";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
+import { useAuth } from "@/contexts/AuthContext";
 
 const HomePage: React.FC = () => {
-  const roundNumber = 1234567;
-  const countdown = 6;
-  const initialRouletteNumbers = [
+  const { user, loading, setUser } = useAuth();
+  const [rouletteNumbers, setRouletteNumbers] = useState([
     1, 14, 2, 13, 3, 12, 4, 0, 11, 5, 10, 6, 9, 7, 8,
-  ];
-
-  const [rouletteNumbers, setRouletteNumbers] = useState(
-    initialRouletteNumbers
-  );
+  ]);
   const [targetNumber, setTargetNumber] = useState(14);
   const [bets, setBets] = useState<any[]>([]);
   const [history, setHistory] = useState([7, 4, 13, 9, 0]);
-  const [betAmount, setBetAmount] = useState(0.01); // Default bet amount
+  const [betAmount, setBetAmount] = useState(0.01);
 
   useEffect(() => {
     SocketService.connect(process.env.NEXT_PUBLIC_BACKEND_URL || "");
@@ -35,15 +32,30 @@ const HomePage: React.FC = () => {
       }
     );
 
-    SocketService.on("all-bets", (allBets: any[]) => {
-      setBets(allBets);
-      console.log(allBets);
-    });
-
-    SocketService.emit("get-all-bets", roundNumber);
-
     SocketService.on("bet-updated", (updatedBets: any[]) => {
       setBets(updatedBets);
+    });
+
+    SocketService.on("all-bets", (allBets: any[]) => {
+      setBets(allBets);
+    });
+    SocketService.emit("get-all-bets", {});
+
+    SocketService.on("balance-updated", (balance: number) => {
+      console.log("Balance updated event received with balance:", balance);
+      if (balance !== undefined && user) {
+        setUser((prevUser) => {
+          if (!prevUser) return null;
+
+          console.log("Updating user balance in state:", balance);
+          return {
+            ...prevUser,
+            balance: balance,
+          };
+        });
+      } else {
+        console.error("Received undefined balance, not updating user state.");
+      }
     });
 
     SocketService.on("clear-bets", () => {
@@ -52,27 +64,31 @@ const HomePage: React.FC = () => {
 
     return () => {
       SocketService.off("roulette-result");
-      SocketService.off("all-bets");
       SocketService.off("bet-updated");
+      SocketService.off("all-bets");
+      SocketService.off("balance-updated");
       SocketService.off("clear-bets");
       SocketService.disconnect();
     };
-  }, [roundNumber]);
+  }, [user, setUser]);
 
   const placeBet = (color: string) => {
-    SocketService.emit("place-bet", {
-      color,
-      amount: betAmount,
-      userId: "66b73b485dcac28cda156efa",
-    });
+    if (user) {
+      SocketService.emit("place-bet", {
+        color,
+        amount: betAmount,
+        userId: user._id,
+      });
+    }
   };
 
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-900">
-        <Header />
+        <Header balance={user?.balance || 0} loading={loading} />
+
         <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
-          <GameInfo roundNumber={roundNumber} countdown={countdown} />
+          <GameInfo roundNumber={1234567} countdown={6} />
           <div className="relative w-4/5 mx-auto overflow-hidden mb-8">
             <RouletteDisplay
               numbers={rouletteNumbers}
@@ -83,7 +99,10 @@ const HomePage: React.FC = () => {
             <BettingControl betAmount={betAmount} setBetAmount={setBetAmount} />
           </div>
 
-          <BettingArea bets={bets} placeBet={placeBet} />
+          <BettingArea
+            bets={Array.isArray(bets) ? bets : []}
+            placeBet={placeBet}
+          />
           <HistoryArea history={history} />
         </main>
       </div>

@@ -90,7 +90,11 @@ export const checkAuth = async (): Promise<AuthResponse> => {
     const response = await checkUserAuth();
 
     if (response.status === 200) {
-      return { success: true, isAuthenticated: response.data.isAuthenticated };
+      return {
+        success: true,
+        isAuthenticated: response.data.isAuthenticated,
+        user: response.data?.user,
+      };
     }
   } catch (error: unknown) {
     return { success: false, isAuthenticated: false };
