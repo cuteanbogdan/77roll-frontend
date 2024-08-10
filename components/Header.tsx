@@ -22,12 +22,12 @@ const Header: React.FC = () => {
         <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
           Deposit
         </button>
-        <img src="/flags/en.png" alt="English" className="w-6 h-4" />
+        {/* <img src="/flags/en.png" alt="English" className="w-6 h-4" />
         <img
           src="/avatars/user.png"
           alt="User Avatar"
           className="w-10 h-10 rounded-full"
-        />
+        /> */}
       </div>
     </header>
   );

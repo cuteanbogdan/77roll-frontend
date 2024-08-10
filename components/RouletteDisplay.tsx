@@ -2,23 +2,29 @@
 import React from "react";
 
 const RouletteDisplay: React.FC<{ numbers: number[] }> = ({ numbers }) => {
+  const repeatedNumbers = [...numbers, ...numbers, ...numbers];
+
   return (
-    <div className="flex justify-center space-x-2 mb-4">
-      {numbers.map((number, index) => (
-        <div
-          key={index}
-          className={`w-12 h-12 flex justify-center items-center rounded-full text-white font-bold
-            ${
-              number === 0
-                ? "bg-green-500"
-                : number % 2 === 0
-                ? "bg-black"
-                : "bg-red-500"
-            }`}
-        >
-          {number}
-        </div>
-      ))}
+    <div className="relative w-full overflow-hidden rounded-lg">
+      <div className="absolute inset-y-0 left-1/2 z-10 w-1 bg-yellow-500"></div>
+
+      <div className="flex items-center whitespace-nowrap">
+        {repeatedNumbers.map((number, index) => (
+          <div
+            key={index}
+            className={`flex-shrink-0 flex justify-center items-center w-24 h-24 text-white font-bold text-4xl
+              ${
+                number === 0
+                  ? "bg-green-500"
+                  : index % 2 === 0
+                  ? "bg-red-500"
+                  : "bg-gray-700"
+              }`}
+          >
+            {number}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
