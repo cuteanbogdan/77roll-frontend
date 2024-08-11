@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
         <Header balance={user?.balance || 0} loading={loading} />
 
         <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
-          <GameInfo roundNumber={1234567} countdown={6} />
+          <GameInfo roundNumber={1234567} />
           <div className="relative w-4/5 mx-auto overflow-hidden mb-8">
             <RouletteDisplay
               numbers={rouletteNumbers}
@@ -42,7 +42,6 @@ const HomePage: React.FC = () => {
           <div className="p-4 bg-gray-900 flex justify-center items-center mb-2">
             <BettingControl betAmount={betAmount} setBetAmount={setBetAmount} />
           </div>
-
           <BettingArea bets={state.bets} placeBet={handlePlaceBet} />
           <HistoryArea history={state.history} />
         </main>
