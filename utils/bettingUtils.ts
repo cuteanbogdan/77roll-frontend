@@ -25,3 +25,8 @@ export const rouletteNumbers: RouletteNumber[] = [
   { number: 7, color: "red" },
   { number: 8, color: "black" },
 ];
+
+export const getColorForNumber = (number: number) => {
+  const found = rouletteNumbers.find((item) => item.number === number);
+  return found ? found.color : "gray";
+};

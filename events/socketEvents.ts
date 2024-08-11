@@ -14,12 +14,13 @@ export const useSocketListeners = (
     }
 
     SocketService.on(
-      "roulette-result1",
+      "roulette-result",
       (result: { winningNumber: number; updatedHistory: number[] }) => {
         dispatch({ type: "SET_TARGET_NUMBER", payload: result.winningNumber });
         dispatch({ type: "SET_HISTORY", payload: result.updatedHistory });
       }
     );
+
     SocketService.emit("get-all-bets", {});
 
     SocketService.on("bet-updated", (updatedBets: any[]) => {

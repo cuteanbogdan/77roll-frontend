@@ -6,7 +6,7 @@ export type ActionType =
 
 export const initialState: StateType = {
   bets: [],
-  history: [7, 4, 13, 9, 0],
+  history: [],
   targetNumber: 14,
 };
 
