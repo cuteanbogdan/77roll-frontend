@@ -9,8 +9,12 @@ export const useSocketListeners = (
   user: any
 ) => {
   useEffect(() => {
+    if (user && user._id) {
+      SocketService.registerUser(user._id);
+    }
+
     SocketService.on(
-      "roulette-result",
+      "roulette-result1",
       (result: { winningNumber: number; updatedHistory: number[] }) => {
         dispatch({ type: "SET_TARGET_NUMBER", payload: result.winningNumber });
         dispatch({ type: "SET_HISTORY", payload: result.updatedHistory });
@@ -46,6 +50,11 @@ export const useSocketListeners = (
       dispatch({ type: "CLEAR_BETS" });
     });
 
+    SocketService.on("bet-error", (error: { message: string }) => {
+      // Handle the error, e.g., show a message to the user
+      alert(`Bet Error: ${error.message}`);
+    });
+
     return () => {
       SocketService.off("roulette-result");
       SocketService.off("bet-updated");
@@ -53,6 +62,7 @@ export const useSocketListeners = (
       SocketService.off("all-bets");
       SocketService.off("balance-updated");
       SocketService.off("clear-bets");
+      SocketService.off("bet-error");
     };
   }, [user, setUser, dispatch]);
 };

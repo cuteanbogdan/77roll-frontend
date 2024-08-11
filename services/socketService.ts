@@ -54,6 +54,12 @@ class SocketService {
       this.socket.emit(event, data);
     }
   }
+
+  public registerUser(userId: string) {
+    if (this.socket) {
+      this.emit("register-user", userId);
+    }
+  }
 }
 
 export default new SocketService();
