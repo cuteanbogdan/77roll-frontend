@@ -17,7 +17,7 @@ export const useSocketListeners = (
       "roulette-result",
       (result: { winningNumber: number; updatedHistory: number[] }) => {
         dispatch({ type: "SET_TARGET_NUMBER", payload: result.winningNumber });
-        dispatch({ type: "SET_HISTORY", payload: result.updatedHistory });
+        // dispatch({ type: "SET_HISTORY", payload: result.updatedHistory });
       }
     );
 

@@ -25,7 +25,13 @@ const HomePage: React.FC = () => {
       placeBet(user._id, color, betAmount);
     }
   };
-
+  const handleAnimationComplete = () => {
+    dispatch({
+      type: "SET_HISTORY",
+      payload: [...state.history, state.targetNumber],
+    });
+  };
+  console.log(state.history);
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-900">
@@ -37,6 +43,7 @@ const HomePage: React.FC = () => {
             <RouletteDisplay
               numbers={rouletteNumbers}
               targetNumber={state.targetNumber}
+              onAnimationComplete={handleAnimationComplete}
             />
           </div>
           <div className="p-4 bg-gray-900 flex justify-center items-center mb-2">

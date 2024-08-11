@@ -4,7 +4,8 @@ import React, { useEffect, useRef } from "react";
 const RouletteDisplay: React.FC<{
   numbers: RouletteNumber[];
   targetNumber: number;
-}> = ({ numbers, targetNumber }) => {
+  onAnimationComplete: () => void;
+}> = ({ numbers, targetNumber, onAnimationComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const blockWidth = 96; // Width of each block
@@ -66,10 +67,11 @@ const RouletteDisplay: React.FC<{
           speedRef.current *= 0.9; // Further reduce speed when close to target
         }
 
-        if (speedRef.current < 1 && Math.abs(distance) < 1.5) {
+        if (speedRef.current < 1 || Math.abs(distance) < 1.5) {
           applyTransform(targetPosition); // Snap to target position
           speedRef.current = 0; // Stop the animation
           console.log("Animation stopped.");
+          onAnimationComplete();
           return;
         }
       }

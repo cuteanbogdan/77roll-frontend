@@ -7,7 +7,7 @@ export type ActionType =
 export const initialState: StateType = {
   bets: [],
   history: [],
-  targetNumber: 14,
+  targetNumber: 1,
 };
 
 export function reducer(state: StateType, action: ActionType): StateType {
