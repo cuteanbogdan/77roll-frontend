@@ -3,3 +3,8 @@ interface StateType {
   history: number[];
   targetNumber: number;
 }
+
+interface RouletteNumber {
+  number: number;
+  color: "red" | "black" | "green";
+}

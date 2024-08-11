@@ -11,7 +11,7 @@ import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { reducer, initialState } from "../contexts/stateManagement";
 import { useSocketListeners } from "../events/socketEvents";
-import { placeBet } from "@/utils/bettingUtils";
+import { placeBet, rouletteNumbers } from "@/utils/bettingUtils";
 
 const HomePage: React.FC = () => {
   const { user, loading, setUser } = useAuth();
@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
           <GameInfo roundNumber={1234567} countdown={6} />
           <div className="relative w-4/5 mx-auto overflow-hidden mb-8">
             <RouletteDisplay
-              numbers={[1, 14, 2, 13, 3, 12, 4, 0, 11, 5, 10, 6, 9, 7, 8]}
+              numbers={rouletteNumbers}
               targetNumber={state.targetNumber}
             />
           </div>
