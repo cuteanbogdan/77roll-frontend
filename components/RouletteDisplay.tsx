@@ -6,56 +6,107 @@ const RouletteDisplay: React.FC<{
   targetNumber: number;
 }> = ({ numbers, targetNumber }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const blockWidth = 96;
+  const contentRef = useRef<HTMLDivElement>(null);
+  const blockWidth = 96; // Width of each block
+  const totalWidth = numbers.length * blockWidth;
+  const speedRef = useRef(80); // Start with a high speed for random spin
+  const offsetRef = useRef(0);
+  const phaseRef = useRef<"random" | "landing">("random"); // Control phases
+  const previousTargetRef = useRef<number | undefined>(undefined);
 
-  const repeatedNumbers = [...numbers, ...numbers, ...numbers];
+  const applyTransform = (offset: number) => {
+    if (contentRef.current) {
+      contentRef.current.style.transform = `translateX(-${offset}px)`;
+    }
+  };
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    let animationFrameId: number;
 
-    const firstIndex = repeatedNumbers.indexOf(
-      repeatedNumbers.find((item) => item.number === targetNumber)!
-    );
+    const animate = () => {
+      // Update offset based on current speed
+      offsetRef.current += speedRef.current;
 
-    const targetIndex = repeatedNumbers.findIndex(
-      (item, index) => item.number === targetNumber && index > firstIndex
-    );
+      // Reset offset if it exceeds total width
+      if (offsetRef.current >= totalWidth) {
+        offsetRef.current -= totalWidth;
+      }
 
-    const targetPosition =
-      targetIndex * blockWidth - container.clientWidth / 2 + blockWidth / 2;
+      // Apply the current transform based on the updated offset
+      applyTransform(offsetRef.current);
 
-    setTimeout(() => {
-      container.scrollTo({
-        left: targetPosition,
-        behavior: "smooth",
-      });
-    }, 100);
-  }, [numbers, targetNumber, blockWidth, repeatedNumbers]);
+      if (phaseRef.current === "random") {
+        // Gradually reduce speed during random spinning
+        speedRef.current *= 0.99;
+
+        // After a certain speed threshold, switch to landing phase
+        if (speedRef.current < 10) {
+          phaseRef.current = "landing";
+          speedRef.current = 10; // Reset to a stable speed for landing
+        }
+      }
+
+      if (phaseRef.current === "landing") {
+        const targetDiv = contentRef.current?.querySelector(
+          `[data-number="${targetNumber}"]`
+        ) as HTMLDivElement;
+
+        if (!targetDiv) return;
+
+        const targetPosition =
+          targetDiv.offsetLeft -
+          (containerRef.current?.clientWidth ?? 0) / 2 +
+          blockWidth / 2;
+
+        const distance =
+          (targetPosition - offsetRef.current + totalWidth) % totalWidth;
+
+        // Gradually reduce speed as we approach the target
+        if (Math.abs(distance) < blockWidth) {
+          speedRef.current *= 0.9; // Further reduce speed when close to target
+        }
+
+        if (speedRef.current < 1 && Math.abs(distance) < 1.5) {
+          applyTransform(targetPosition); // Snap to target position
+          speedRef.current = 0; // Stop the animation
+          console.log("Animation stopped.");
+          return;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    if (targetNumber !== previousTargetRef.current) {
+      previousTargetRef.current = targetNumber;
+      speedRef.current = 60; // Reset speed to initial high value
+      phaseRef.current = "random"; // Start with random phase
+      offsetRef.current = 0; // Optionally reset offset
+      console.log("Starting animation with new target:", targetNumber);
+      animationFrameId = requestAnimationFrame(animate);
+    }
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [targetNumber, numbers]);
 
   return (
-    <div className="relative w-full overflow-hidden rounded-lg">
+    <div
+      ref={containerRef}
+      className="relative w-full overflow-hidden rounded-lg"
+    >
       <div className="absolute inset-y-0 left-1/2 transform -translate-x-1/2 z-10 w-1 bg-yellow-500"></div>
-
-      <div
-        ref={containerRef}
-        className="flex items-center whitespace-nowrap overflow-x-hidden"
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        }}
-      >
-        {repeatedNumbers.map((item, index) => (
+      <div ref={contentRef} className="flex items-center whitespace-nowrap">
+        {[...numbers, ...numbers].map((item, index) => (
           <div
             key={index}
-            className={`flex-shrink-0 flex justify-center items-center w-24 h-24 text-white font-bold text-4xl
-              ${
-                item.color === "green"
-                  ? "bg-green-500"
-                  : item.color === "red"
-                  ? "bg-red-500"
-                  : "bg-gray-700"
-              }`}
+            data-number={item.number} // Add data-number attribute for targeting
+            className={`flex-shrink-0 w-24 h-24 flex justify-center items-center text-white text-4xl font-bold ${
+              item.color === "green"
+                ? "bg-green-500"
+                : item.color === "red"
+                ? "bg-red-500"
+                : "bg-gray-700"
+            }`}
           >
             {item.number}
           </div>

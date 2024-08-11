@@ -33,7 +33,7 @@ const HomePage: React.FC = () => {
 
         <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
           <GameInfo roundNumber={1234567} />
-          <div className="relative w-4/5 mx-auto overflow-hidden mb-8">
+          <div className="flex justify-center  mx-auto overflow-hidden mb-8">
             <RouletteDisplay
               numbers={rouletteNumbers}
               targetNumber={state.targetNumber}
