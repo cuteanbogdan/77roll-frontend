@@ -3,6 +3,7 @@ interface StateType {
   history: number[];
   targetNumber: number;
   bettingOpen: boolean;
+  forceUpdate: boolean;
 }
 
 interface RouletteNumber {
