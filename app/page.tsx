@@ -31,7 +31,7 @@ const HomePage: React.FC = () => {
   const handleAnimationComplete = () => {
     dispatch({
       type: "SET_HISTORY",
-      payload: [...state.history, state.targetNumber],
+      payload: [state.targetNumber, ...state.history], //Temporary, needs fix
     });
   };
 

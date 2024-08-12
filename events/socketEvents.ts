@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import SocketService from "@/services/socketService";
 import { Dispatch } from "react";
 import { ActionType } from "../contexts/stateManagement";
@@ -8,9 +8,33 @@ export const useSocketListeners = (
   setUser: any,
   user: any
 ) => {
+  const initialStateLoadedRef = useRef(false);
+
   useEffect(() => {
-    if (user && user._id) {
+    if (user && user._id && !initialStateLoadedRef.current) {
       SocketService.registerUser(user._id);
+
+      SocketService.emit("get-initial-state", {});
+
+      SocketService.on("initial-state", (initialState: any) => {
+        console.log("YEEESS");
+        dispatch({ type: "SET_BETS", payload: initialState.bets });
+        dispatch({ type: "SET_HISTORY", payload: initialState.history });
+        dispatch({
+          type: "SET_TARGET_NUMBER",
+          payload: { number: initialState.targetNumber },
+        });
+        dispatch({
+          type: "SET_ROUND_NUMBER",
+          payload: initialState.roundNumber,
+        });
+        dispatch({
+          type: "SET_BETTING_OPEN",
+          payload: initialState.bettingOpen,
+        });
+
+        initialStateLoadedRef.current = true;
+      });
     }
 
     SocketService.on(
@@ -72,6 +96,7 @@ export const useSocketListeners = (
     });
 
     return () => {
+      SocketService.off("initial-state");
       SocketService.off("roulette-result");
       SocketService.off("betting-open");
       SocketService.off("betting-closed");

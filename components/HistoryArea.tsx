@@ -8,7 +8,7 @@ const HistoryArea: React.FC<{ history: number[] }> = ({ history }) => {
       <div className="flex space-x-1 overflow-x-auto">
         {history
           .slice()
-          .reverse()
+          // .reverse()
           .map((result, index) => (
             <div
               key={index}
