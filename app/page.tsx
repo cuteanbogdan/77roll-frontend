@@ -41,11 +41,12 @@ const HomePage: React.FC = () => {
         <Header balance={user?.balance || 0} loading={loading} />
 
         <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
-          <GameInfo roundNumber={1234567} />
+          <GameInfo roundNumber={state.roundNumber + 1} />
           <div className="flex justify-center mx-auto overflow-hidden mb-8">
             <RouletteDisplay
               numbers={rouletteNumbers}
               targetNumber={state.targetNumber}
+              roundNumber={state.roundNumber}
               onAnimationComplete={handleAnimationComplete}
             />
           </div>

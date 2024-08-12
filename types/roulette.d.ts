@@ -2,8 +2,8 @@ interface StateType {
   bets: any[];
   history: number[];
   targetNumber: number;
+  roundNumber: number;
   bettingOpen: boolean;
-  forceUpdate: boolean;
 }
 
 interface RouletteNumber {

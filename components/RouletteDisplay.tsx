@@ -4,8 +4,9 @@ import SocketService from "@/services/socketService";
 const RouletteDisplay: React.FC<{
   numbers: RouletteNumber[];
   targetNumber: number;
+  roundNumber: number;
   onAnimationComplete: () => void;
-}> = ({ numbers, targetNumber, onAnimationComplete }) => {
+}> = ({ numbers, targetNumber, roundNumber, onAnimationComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const blockWidth = 96; // Width of each block
@@ -13,7 +14,6 @@ const RouletteDisplay: React.FC<{
   const speedRef = useRef(80); // Start with a high speed for random spin
   const offsetRef = useRef(0);
   const phaseRef = useRef<"random" | "landing">("random"); // Control phases
-  const previousTargetRef = useRef<number | undefined>(undefined);
 
   const applyTransform = (offset: number) => {
     if (contentRef.current) {
@@ -87,26 +87,29 @@ const RouletteDisplay: React.FC<{
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    if (targetNumber !== previousTargetRef.current) {
-      previousTargetRef.current = targetNumber;
-      speedRef.current = 60;
-      phaseRef.current = "random";
-      offsetRef.current = 0;
-      console.log("Starting animation with new target:", targetNumber);
-      animationFrameId = requestAnimationFrame(animate);
+    // Always trigger the animation when the targetNumber or roundNumber changes
+    speedRef.current = 60;
+    phaseRef.current = "random";
+    offsetRef.current = 0;
+    console.log(
+      "Starting animation with new target:",
+      targetNumber,
+      "for round:",
+      roundNumber
+    );
+    animationFrameId = requestAnimationFrame(animate);
 
-      timeoutId = window.setTimeout(() => {
-        console.log("Fallback triggered.");
-        onAnimationComplete();
-        SocketService.emit("reset-bets-after-animation", {});
-      }, 5000);
-    }
+    timeoutId = window.setTimeout(() => {
+      console.log("Fallback triggered.");
+      onAnimationComplete();
+      SocketService.emit("reset-bets-after-animation", {});
+    }, 5000);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       clearTimeout(timeoutId);
     };
-  }, [targetNumber, numbers]);
+  }, [targetNumber, roundNumber, numbers]);
 
   return (
     <div

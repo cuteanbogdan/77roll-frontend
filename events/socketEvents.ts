@@ -15,11 +15,16 @@ export const useSocketListeners = (
 
     SocketService.on(
       "roulette-result",
-      (result: { winningNumber: number; updatedHistory: number[] }) => {
+      (result: {
+        winningNumber: number;
+        updatedHistory: number[];
+        roundNumber: number;
+      }) => {
         dispatch({
           type: "SET_TARGET_NUMBER",
-          payload: { number: result.winningNumber, forceUpdate: true },
+          payload: { number: result.winningNumber },
         });
+        dispatch({ type: "SET_ROUND_NUMBER", payload: result.roundNumber });
         // dispatch({ type: "SET_HISTORY", payload: result.updatedHistory });
       }
     );
