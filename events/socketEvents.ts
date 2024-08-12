@@ -21,6 +21,14 @@ export const useSocketListeners = (
       }
     );
 
+    SocketService.on("betting-open", () => {
+      dispatch({ type: "SET_BETTING_OPEN", payload: true });
+    });
+
+    SocketService.on("betting-closed", () => {
+      dispatch({ type: "SET_BETTING_OPEN", payload: false });
+    });
+
     SocketService.emit("get-all-bets", {});
 
     SocketService.on("bet-updated", (updatedBets: any[]) => {
@@ -52,12 +60,13 @@ export const useSocketListeners = (
     });
 
     SocketService.on("bet-error", (error: { message: string }) => {
-      // Handle the error, e.g., show a message to the user
       alert(`Bet Error: ${error.message}`);
     });
 
     return () => {
       SocketService.off("roulette-result");
+      SocketService.off("betting-open");
+      SocketService.off("betting-closed");
       SocketService.off("bet-updated");
       SocketService.off("new-bet");
       SocketService.off("all-bets");

@@ -1,5 +1,5 @@
-"use client";
 import React, { useEffect, useRef } from "react";
+import SocketService from "@/services/socketService";
 
 const RouletteDisplay: React.FC<{
   numbers: RouletteNumber[];
@@ -23,6 +23,7 @@ const RouletteDisplay: React.FC<{
 
   useEffect(() => {
     let animationFrameId: number;
+    let timeoutId: number;
 
     const animate = () => {
       // Update offset based on current speed
@@ -72,6 +73,13 @@ const RouletteDisplay: React.FC<{
           speedRef.current = 0; // Stop the animation
           console.log("Animation stopped.");
           onAnimationComplete();
+
+          // Wait for 2 seconds after the animation is over
+          setTimeout(() => {
+            // Emit the event to reset bets
+            SocketService.emit("reset-bets-after-animation", {});
+          }, 2000);
+          clearTimeout(timeoutId);
           return;
         }
       }
@@ -81,14 +89,23 @@ const RouletteDisplay: React.FC<{
 
     if (targetNumber !== previousTargetRef.current) {
       previousTargetRef.current = targetNumber;
-      speedRef.current = 60; // Reset speed to initial high value
-      phaseRef.current = "random"; // Start with random phase
-      offsetRef.current = 0; // Optionally reset offset
+      speedRef.current = 60;
+      phaseRef.current = "random";
+      offsetRef.current = 0;
       console.log("Starting animation with new target:", targetNumber);
       animationFrameId = requestAnimationFrame(animate);
+
+      timeoutId = window.setTimeout(() => {
+        console.log("Fallback triggered.");
+        onAnimationComplete();
+        SocketService.emit("reset-bets-after-animation", {});
+      }, 5000);
     }
 
-    return () => cancelAnimationFrame(animationFrameId);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      clearTimeout(timeoutId);
+    };
   }, [targetNumber, numbers]);
 
   return (
@@ -101,7 +118,7 @@ const RouletteDisplay: React.FC<{
         {[...numbers, ...numbers].map((item, index) => (
           <div
             key={index}
-            data-number={item.number} // Add data-number attribute for targeting
+            data-number={item.number}
             className={`flex-shrink-0 w-24 h-24 flex justify-center items-center text-white text-4xl font-bold ${
               item.color === "green"
                 ? "bg-green-500"

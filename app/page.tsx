@@ -21,17 +21,20 @@ const HomePage: React.FC = () => {
   useSocketListeners(dispatch, setUser, user);
 
   const handlePlaceBet = (color: string) => {
-    if (user) {
+    if (user && state.bettingOpen) {
       placeBet(user._id, color, betAmount);
+    } else {
+      alert("Betting is currently closed! Please wait for the next round.");
     }
   };
+
   const handleAnimationComplete = () => {
     dispatch({
       type: "SET_HISTORY",
       payload: [...state.history, state.targetNumber],
     });
   };
-  console.log(state.history);
+
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-900">
@@ -39,7 +42,7 @@ const HomePage: React.FC = () => {
 
         <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
           <GameInfo roundNumber={1234567} />
-          <div className="flex justify-center  mx-auto overflow-hidden mb-8">
+          <div className="flex justify-center mx-auto overflow-hidden mb-8">
             <RouletteDisplay
               numbers={rouletteNumbers}
               targetNumber={state.targetNumber}

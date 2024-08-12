@@ -2,12 +2,14 @@ export type ActionType =
   | { type: "SET_BETS"; payload: any[] }
   | { type: "CLEAR_BETS" }
   | { type: "SET_HISTORY"; payload: number[] }
-  | { type: "SET_TARGET_NUMBER"; payload: number };
+  | { type: "SET_TARGET_NUMBER"; payload: number }
+  | { type: "SET_BETTING_OPEN"; payload: boolean };
 
 export const initialState: StateType = {
   bets: [],
   history: [],
   targetNumber: 1,
+  bettingOpen: true,
 };
 
 export function reducer(state: StateType, action: ActionType): StateType {
@@ -20,6 +22,8 @@ export function reducer(state: StateType, action: ActionType): StateType {
       return { ...state, history: action.payload };
     case "SET_TARGET_NUMBER":
       return { ...state, targetNumber: action.payload };
+    case "SET_BETTING_OPEN":
+      return { ...state, bettingOpen: action.payload };
     default:
       return state;
   }
