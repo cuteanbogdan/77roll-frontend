@@ -17,7 +17,6 @@ export const useSocketListeners = (
       SocketService.emit("get-initial-state", {});
 
       SocketService.on("initial-state", (initialState: any) => {
-        console.log("YEEESS");
         dispatch({ type: "SET_BETS", payload: initialState.bets });
         dispatch({ type: "SET_HISTORY", payload: initialState.history });
         dispatch({
@@ -95,6 +94,10 @@ export const useSocketListeners = (
       alert(`Bet Error: ${error.message}`);
     });
 
+    SocketService.on("updated-history", (updatedHistory: number[]) => {
+      dispatch({ type: "SET_HISTORY", payload: updatedHistory });
+    });
+
     return () => {
       SocketService.off("initial-state");
       SocketService.off("roulette-result");
@@ -106,6 +109,7 @@ export const useSocketListeners = (
       SocketService.off("balance-updated");
       SocketService.off("clear-bets");
       SocketService.off("bet-error");
+      SocketService.off("updated-history");
     };
   }, [user, setUser, dispatch]);
 };

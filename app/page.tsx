@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { reducer, initialState } from "../contexts/stateManagement";
 import { useSocketListeners } from "../events/socketEvents";
 import { placeBet, rouletteNumbers } from "@/utils/bettingUtils";
+import SocketService from "@/services/socketService";
 
 const HomePage: React.FC = () => {
   const { user, loading, setUser } = useAuth();
@@ -29,10 +30,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleAnimationComplete = () => {
-    dispatch({
-      type: "SET_HISTORY",
-      payload: [state.targetNumber, ...state.history], //Temporary, needs fix
-    });
+    SocketService.emit("get-history", {});
   };
 
   return (
