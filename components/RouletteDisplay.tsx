@@ -78,7 +78,7 @@ const RouletteDisplay: React.FC<{
           setTimeout(() => {
             // Emit the event to reset bets
             SocketService.emit("reset-bets-after-animation", {});
-          }, 2000);
+          }, 1000);
           clearTimeout(timeoutId);
           return;
         }

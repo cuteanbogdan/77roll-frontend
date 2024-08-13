@@ -18,8 +18,14 @@ const GameInfo: React.FC<{ roundNumber: number }> = ({ roundNumber }) => {
     <div className="text-center text-white mb-4">
       <h2 className="text-lg">Round #{roundNumber}</h2>
       <p className="text-sm text-gray-400">
-        The game starts in:{" "}
-        <span className="text-red-500">{countdown} sec</span>
+        {countdown > 0 ? (
+          <>
+            The game starts in:{" "}
+            <span className="text-red-500">{countdown} sec</span>
+          </>
+        ) : (
+          <span className="text-yellow-500">Rolling...</span>
+        )}
       </p>
     </div>
   );
