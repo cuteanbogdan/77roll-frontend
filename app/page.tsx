@@ -48,11 +48,14 @@ const HomePage: React.FC = () => {
               onAnimationComplete={handleAnimationComplete}
             />
           </div>
+          <div className="flex justify-center">
+            <HistoryArea history={state.history} />
+          </div>
+
           <div className="p-4 bg-gray-900 flex justify-center items-center mb-2">
             <BettingControl betAmount={betAmount} setBetAmount={setBetAmount} />
           </div>
           <BettingArea bets={state.bets} placeBet={handlePlaceBet} />
-          <HistoryArea history={state.history} />
         </main>
       </div>
     </ProtectedRoute>
