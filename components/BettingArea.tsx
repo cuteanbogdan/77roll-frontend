@@ -36,11 +36,11 @@ const BettingArea: React.FC<{
         {betAreas.map((area) => (
           <div
             key={area.color}
-            className={`w-1/3 rounded border-2 ${area.borderColor}`}
+            className={`w-1/3 border-2 ${area.borderColor} rounded-md`}
           >
             <button
               onClick={() => placeBet(area.color)}
-              className={`w-full flex justify-between items-center p-4 ${area.bgColor} rounded-t font-bold`}
+              className={`w-full flex justify-between items-center p-4 ${area.bgColor} rounded-t-md font-bold`}
             >
               <span>{area.label}</span>
               <div className="flex items-center">
@@ -53,7 +53,7 @@ const BettingArea: React.FC<{
                 {area.multiplier}
               </div>
             </button>
-            <div className="bg-black-500 bg-opacity-50 p-2 rounded-b">
+            <div className="bg-black-500 bg-opacity-50 p-2 rounded-b-md h-64 overflow-y-auto">
               {bets
                 .filter((bet) => bet.color === area.color)
                 .map((bet, index) => (
