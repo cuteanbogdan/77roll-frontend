@@ -1,66 +1,83 @@
 "use client";
 import React, { memo } from "react";
+import { FaCoins, FaUser } from "react-icons/fa";
 
 const BettingArea: React.FC<{
   bets: any[];
   placeBet: (color: string) => void;
 }> = memo(({ bets, placeBet }) => {
+  const betAreas = [
+    {
+      color: "red",
+      label: "Red",
+      bgColor: "bg-red-500",
+      borderColor: "border-red-600",
+      multiplier: "2x",
+    },
+    {
+      color: "green",
+      label: "Green",
+      bgColor: "bg-green-500",
+      borderColor: "border-green-600",
+      multiplier: "14x",
+    },
+    {
+      color: "black",
+      label: "Black",
+      bgColor: "bg-gray-700",
+      borderColor: "border-gray-800",
+      multiplier: "2x",
+    },
+  ];
+
   return (
     <div className="text-white">
-      <div className="flex justify-between mb-4">
-        <button
-          onClick={() => placeBet("red")}
-          className="w-1/3 bg-red-500 py-2 rounded text-center font-bold hover:bg-red-400"
-        >
-          Bet on Red
-        </button>
-        <button
-          onClick={() => placeBet("green")}
-          className="w-1/3 bg-green-500 py-2 rounded text-center font-bold hover:bg-green-400"
-        >
-          Bet on Green
-        </button>
-        <button
-          onClick={() => placeBet("black")}
-          className="w-1/3 bg-black py-2 rounded text-center font-bold hover:bg-gray-700"
-        >
-          Bet on Black
-        </button>
-      </div>
-      <div className="flex justify-between">
-        <div className="w-1/3 bg-red-600 p-4 rounded">
-          <h3 className="font-bold mb-2">Red</h3>
-          {bets
-            .filter((bet) => bet.color === "red")
-            .map((bet, index) => (
-              <div key={index} className="flex justify-between">
-                <span>{bet.userId.username}</span>
-                <span>{bet.amount}</span>
+      <div className="flex justify-between gap-4">
+        {betAreas.map((area) => (
+          <div
+            key={area.color}
+            className={`w-1/3 rounded border-2 ${area.borderColor}`}
+          >
+            <button
+              onClick={() => placeBet(area.color)}
+              className={`w-full flex justify-between items-center p-4 ${area.bgColor} rounded-t font-bold`}
+            >
+              <span>{area.label}</span>
+              <div className="flex items-center">
+                <span className="flex items-center gap-1">
+                  <FaUser className="text-lg" />{" "}
+                  {bets.filter((bet) => bet.color === area.color).length}
+                </span>
               </div>
-            ))}
-        </div>
-        <div className="w-1/3 bg-green-600 p-4 rounded">
-          <h3 className="font-bold mb-2">Green</h3>
-          {bets
-            .filter((bet) => bet.color === "green")
-            .map((bet, index) => (
-              <div key={index} className="flex justify-between">
-                <span>{bet.userId.username}</span>
-                <span>{bet.amount}</span>
+              <div className="px-2 py-1 rounded bg-opacity-25 bg-black text-white">
+                {area.multiplier}
               </div>
-            ))}
-        </div>
-        <div className="w-1/3 bg-gray-800 p-4 rounded">
-          <h3 className="font-bold mb-2">Black</h3>
-          {bets
-            .filter((bet) => bet.color === "black")
-            .map((bet, index) => (
-              <div key={index} className="flex justify-between">
-                <span>{bet.userId.username}</span>
-                <span>{bet.amount}</span>
-              </div>
-            ))}
-        </div>
+            </button>
+            <div className="bg-black-500 bg-opacity-50 p-2 rounded-b">
+              {bets
+                .filter((bet) => bet.color === area.color)
+                .map((bet, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center py-2"
+                  >
+                    <span className="flex items-center gap-2">
+                      <img
+                        src={bet.userId.avatarUrl}
+                        alt="avatar"
+                        className="w-8 h-8 rounded-full"
+                      />
+                      {bet.userId.username}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <FaCoins className="text-yellow-500" />{" "}
+                      {bet.amount.toFixed(2)}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
