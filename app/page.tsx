@@ -52,10 +52,14 @@ const HomePage: React.FC = () => {
             <HistoryArea history={state.history} />
           </div>
 
-          <div className="p-4 bg-gray-900 flex justify-center items-center mb-2">
+          <div className="py-4 bg-gray-900 flex justify-center items-center mb-2 w-full">
             <BettingControl betAmount={betAmount} setBetAmount={setBetAmount} />
           </div>
-          <BettingArea bets={state.bets} placeBet={handlePlaceBet} />
+          <BettingArea
+            bets={state.bets}
+            placeBet={handlePlaceBet}
+            bettingOpen={state.bettingOpen}
+          />
         </main>
       </div>
     </ProtectedRoute>

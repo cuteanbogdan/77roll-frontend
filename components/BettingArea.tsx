@@ -5,7 +5,8 @@ import { FaCoins, FaUser } from "react-icons/fa";
 const BettingArea: React.FC<{
   bets: any[];
   placeBet: (color: string) => void;
-}> = memo(({ bets, placeBet }) => {
+  bettingOpen: boolean;
+}> = memo(({ bets, placeBet, bettingOpen }) => {
   const betAreas = [
     {
       color: "red",
@@ -36,11 +37,18 @@ const BettingArea: React.FC<{
         {betAreas.map((area) => (
           <div
             key={area.color}
-            className={`w-1/3 border-2 ${area.borderColor} rounded-md`}
+            className={`w-1/3 rounded border-2 ${area.borderColor} ${
+              !bettingOpen ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             <button
-              onClick={() => placeBet(area.color)}
-              className={`w-full flex justify-between items-center p-4 ${area.bgColor} rounded-t-md font-bold`}
+              onClick={() => bettingOpen && placeBet(area.color)}
+              disabled={!bettingOpen}
+              className={`w-full flex justify-between items-center p-4 ${
+                area.bgColor
+              } rounded-t-md font-bold ${
+                !bettingOpen ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
             >
               <span>{area.label}</span>
               <div className="flex items-center">

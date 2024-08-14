@@ -38,7 +38,7 @@ const BettingControl: React.FC<{
   };
 
   return (
-    <div className="flex items-center space-x-2 bg-gray-800 p-4 rounded-lg">
+    <div className="flex items-center space-x-2 bg-gray-800 p-4 rounded-lg w-full">
       <div className="flex items-center bg-gray-700 p-2 rounded-lg flex-grow">
         <FaCoins className="text-yellow-500 mr-2" />
         <input
