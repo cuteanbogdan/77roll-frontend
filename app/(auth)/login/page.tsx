@@ -2,14 +2,12 @@
 
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
-  const router = useRouter();
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -17,7 +15,7 @@ const LoginPage: React.FC = () => {
     const result = await login(email, password);
 
     if (result.success) {
-      router.push("/");
+      window.location.href = "/";
     } else {
       setError(result.message || "An error occurred");
     }

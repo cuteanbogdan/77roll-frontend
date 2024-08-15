@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { register } from "@/handlers/authHandler";
 
 const RegisterPage: React.FC = () => {
@@ -9,7 +8,6 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
 
   const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -22,7 +20,7 @@ const RegisterPage: React.FC = () => {
     const result = await register(email, password, username);
 
     if (result.success) {
-      router.push("/");
+      window.location.href = "/";
     } else {
       setError(result.message || "An error occurred");
     }
