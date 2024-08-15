@@ -1,5 +1,8 @@
 import React from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { FaCoins, FaSignOutAlt, FaDice, FaUserCircle } from "react-icons/fa";
+import { PiCoinVerticalFill } from "react-icons/pi";
+import { MdAccountBalanceWallet } from "react-icons/md";
 
 interface HeaderProps {
   balance: number;
@@ -7,35 +10,56 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ balance, loading }) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-900">
-      <nav className="flex space-x-8 text-white">
-        <a href="#" className="hover:text-red-500">
-          Coinflip
-        </a>
-        <a href="#" className="text-red-500">
-          Roulette
-        </a>
-        <a href="#" className="hover:text-red-500">
-          Clan
-        </a>
-      </nav>
+      <div className="flex items-center">
+        <div
+          className="text-red-500 text-2xl font-bold font-logo tracking-wide"
+          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+        >
+          77ROLL
+        </div>
+        <nav className="flex space-x-8 ml-8 text-white">
+          <a href="#" className="flex items-center hover:text-red-500">
+            <PiCoinVerticalFill className="mr-2" />
+            Coinflip
+          </a>
+          <a href="#" className="flex items-center text-red-500">
+            <FaDice className="mr-2" />
+            Roulette
+          </a>
+        </nav>
+      </div>
       <div className="flex items-center space-x-4">
-        <span className="text-white">
+        <span className="flex items-center text-white">
+          <MdAccountBalanceWallet className="mr-2 text-yellow-500" />
           Balance:{" "}
-          <span className="font-bold">
+          <span className="font-bold ml-1">
             {loading ? "Loading..." : balance.toFixed(2)}
           </span>
         </span>
-        <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
+        <button className="flex items-center bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
+          <FaCoins className="mr-2 text-yellow-400" />
           Deposit
         </button>
+        <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
+          {user?.avatarUrl ? (
+            <img
+              src={user.avatarUrl}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <FaUserCircle className="text-white text-2xl" />
+          )}
+        </div>
         <button
           onClick={logout}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
+          className="flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
         >
+          <FaSignOutAlt className="mr-2" />
           Logout
         </button>
       </div>
