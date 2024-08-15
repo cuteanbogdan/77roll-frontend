@@ -15,7 +15,7 @@ import { placeBet, rouletteNumbers } from "@/utils/bettingUtils";
 import SocketService from "@/services/socketService";
 
 const HomePage: React.FC = () => {
-  const { user, loading, setUser } = useAuth();
+  const { user, loading, setUser, logout } = useAuth();
   const [betAmount, setBetAmount] = useState(0.01);
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -36,8 +36,12 @@ const HomePage: React.FC = () => {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gray-900">
-        <Header balance={user?.balance || 0} loading={loading} />
-
+        <Header
+          balance={user?.balance || 0}
+          loading={loading}
+          user={user}
+          logout={logout}
+        />{" "}
         <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
           <GameInfo roundNumber={state.roundNumber + 1} />
           <div className="flex justify-center mx-auto overflow-hidden mb-8">

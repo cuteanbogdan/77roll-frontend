@@ -1,16 +1,19 @@
 import React from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { usePathname } from "next/navigation";
 import { FaCoins, FaSignOutAlt, FaDice, FaUserCircle } from "react-icons/fa";
 import { PiCoinVerticalFill } from "react-icons/pi";
 import { MdAccountBalanceWallet } from "react-icons/md";
+import { User } from "@/types/auth";
 
 interface HeaderProps {
   balance: number;
   loading: boolean;
+  user: User | null;
+  logout: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ balance, loading }) => {
-  const { logout, user } = useAuth();
+const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
+  const pathname = usePathname();
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-900">
@@ -22,11 +25,21 @@ const Header: React.FC<HeaderProps> = ({ balance, loading }) => {
           77ROLL
         </div>
         <nav className="flex space-x-8 ml-8 text-white">
-          <a href="#" className="flex items-center hover:text-red-500">
+          <a
+            href="/coinflip"
+            className={`flex items-center ${
+              pathname === "/coinflip" ? "text-red-500" : "hover:text-red-500"
+            }`}
+          >
             <PiCoinVerticalFill className="mr-2" />
             Coinflip
           </a>
-          <a href="#" className="flex items-center text-red-500">
+          <a
+            href="/roulette"
+            className={`flex items-center ${
+              pathname === "/roulette" ? "text-red-500" : "hover:text-red-500"
+            }`}
+          >
             <FaDice className="mr-2" />
             Roulette
           </a>

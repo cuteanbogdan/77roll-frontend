@@ -11,4 +11,5 @@ export interface User {
   username: string;
   email: string;
   balance: number;
+  avatarUrl: string;
 }
