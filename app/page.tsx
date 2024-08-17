@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import Header from "../components/Header";
 import GameInfo from "../components/GameInfo";
 import RouletteDisplay from "../components/RouletteDisplay";
@@ -15,21 +15,33 @@ import { placeBet, rouletteNumbers } from "@/utils/bettingUtils";
 import SocketService from "@/services/socketService";
 
 const HomePage: React.FC = () => {
-  const { user, loading, setUser, logout } = useAuth();
+  const { user, loading: authLoading, setUser, logout } = useAuth();
   const [betAmount, setBetAmount] = useState(0.01);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [loading, setLoading] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   useSocketListeners(dispatch, setUser, user);
 
+  useEffect(() => {
+    if (isFirstLoad) {
+      setLoading(true);
+    }
+  }, [isFirstLoad]);
+
   const handlePlaceBet = (color: string) => {
-    if (user && state.bettingOpen) {
+    if (user && state.bettingOpen && !loading) {
       placeBet(user._id, color, betAmount);
+    } else if (loading) {
+      alert("Please wait until the current round finishes loading.");
     } else {
       alert("Betting is currently closed! Please wait for the next round.");
     }
   };
 
   const handleAnimationComplete = () => {
+    setLoading(false);
+    setIsFirstLoad(false);
     SocketService.emit("get-history", {});
   };
 
@@ -38,7 +50,7 @@ const HomePage: React.FC = () => {
       <div className="min-h-screen bg-gray-900">
         <Header
           balance={user?.balance || 0}
-          loading={loading}
+          loading={authLoading}
           user={user}
           logout={logout}
         />
@@ -50,6 +62,7 @@ const HomePage: React.FC = () => {
               targetNumber={state.targetNumber}
               roundNumber={state.roundNumber}
               onAnimationComplete={handleAnimationComplete}
+              loading={loading}
             />
           </div>
           <div className="flex justify-center">
@@ -62,7 +75,7 @@ const HomePage: React.FC = () => {
           <BettingArea
             bets={state.bets}
             placeBet={handlePlaceBet}
-            bettingOpen={state.bettingOpen}
+            bettingOpen={state.bettingOpen && !loading}
           />
         </main>
       </div>

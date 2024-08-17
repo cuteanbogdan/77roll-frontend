@@ -6,7 +6,8 @@ const RouletteDisplay: React.FC<{
   targetNumber: number;
   roundNumber: number;
   onAnimationComplete: () => void;
-}> = ({ numbers, targetNumber, roundNumber, onAnimationComplete }) => {
+  loading: boolean;
+}> = ({ numbers, targetNumber, roundNumber, onAnimationComplete, loading }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const blockWidth = 96; // Width of each block
@@ -112,27 +113,34 @@ const RouletteDisplay: React.FC<{
   }, [targetNumber, roundNumber, numbers]);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full overflow-hidden rounded-lg"
-    >
-      <div className="absolute inset-y-0 left-1/2 transform -translate-x-1/2 z-10 w-1 bg-yellow-500"></div>
-      <div ref={contentRef} className="flex items-center whitespace-nowrap">
-        {[...numbers, ...numbers].map((item, index) => (
-          <div
-            key={index}
-            data-number={item.number}
-            className={`flex-shrink-0 w-24 h-24 flex justify-center items-center text-white text-4xl font-bold ${
-              item.color === "green"
-                ? "bg-green-500"
-                : item.color === "red"
-                ? "bg-red-500"
-                : "bg-gray-700"
-            }`}
-          >
-            {item.number}
-          </div>
-        ))}
+    <div className="relative w-full h-full">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+          <div className="text-white text-2xl">Loading...</div>
+        </div>
+      )}
+      <div
+        ref={containerRef}
+        className="relative w-full overflow-hidden rounded-lg"
+      >
+        <div className="absolute inset-y-0 left-1/2 transform -translate-x-1/2 z-10 w-1 bg-yellow-500"></div>
+        <div ref={contentRef} className="flex items-center whitespace-nowrap">
+          {[...numbers, ...numbers].map((item, index) => (
+            <div
+              key={index}
+              data-number={item.number}
+              className={`flex-shrink-0 w-24 h-24 flex justify-center items-center text-white text-4xl font-bold ${
+                item.color === "green"
+                  ? "bg-green-500"
+                  : item.color === "red"
+                  ? "bg-red-500"
+                  : "bg-gray-700"
+              }`}
+            >
+              {item.number}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
