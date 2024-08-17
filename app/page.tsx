@@ -41,7 +41,7 @@ const HomePage: React.FC = () => {
           loading={loading}
           user={user}
           logout={logout}
-        />{" "}
+        />
         <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
           <GameInfo roundNumber={state.roundNumber + 1} />
           <div className="flex justify-center mx-auto overflow-hidden mb-8">

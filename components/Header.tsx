@@ -1,5 +1,6 @@
 import React from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { FaCoins, FaSignOutAlt, FaDice, FaUserCircle } from "react-icons/fa";
 import { PiCoinVerticalFill } from "react-icons/pi";
 import { MdAccountBalanceWallet } from "react-icons/md";
@@ -25,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
           77ROLL
         </div>
         <nav className="flex space-x-8 ml-8 text-white">
-          <a
+          <Link
             href="/coinflip"
             className={`flex items-center ${
               pathname === "/coinflip" ? "text-red-500" : "hover:text-red-500"
@@ -33,8 +34,8 @@ const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
           >
             <PiCoinVerticalFill className="mr-2" />
             Coinflip
-          </a>
-          <a
+          </Link>
+          <Link
             href="/roulette"
             className={`flex items-center ${
               pathname === "/roulette" ? "text-red-500" : "hover:text-red-500"
@@ -42,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
           >
             <FaDice className="mr-2" />
             Roulette
-          </a>
+          </Link>
         </nav>
       </div>
       <div className="flex items-center space-x-4">
@@ -57,7 +58,10 @@ const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
           <FaCoins className="mr-2 text-yellow-400" />
           Deposit
         </button>
-        <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
+        <Link
+          href={pathname !== "/profile" ? "/profile" : "#"}
+          className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden"
+        >
           {user?.avatarUrl ? (
             <img
               src={user.avatarUrl}
@@ -67,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
           ) : (
             <FaUserCircle className="text-white text-2xl" />
           )}
-        </div>
+        </Link>
         <button
           onClick={logout}
           className="flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
