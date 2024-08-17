@@ -1,12 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import ProfilePictureUploadModal from "@/components/profile/ProfilePictureUploadModal";
+import { useAuth } from "@/contexts/AuthContext";
 import Header from "../../components/Header";
 import { FaCoins } from "react-icons/fa";
-import { useAuth } from "@/contexts/AuthContext";
 
-const Profile = () => {
+const Profile: React.FC = () => {
   const { user, logout, loading } = useAuth();
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -15,10 +25,8 @@ const Profile = () => {
         loading={loading}
         user={user}
         logout={logout}
-      />{" "}
-      {/* Pass user, logout, and balance */}
+      />
       <div className="flex max-w-7xl mx-auto py-8">
-        {/* Sidebar */}
         <div className="w-1/4 bg-gray-800 p-4 rounded-lg">
           <h2 className="text-lg font-bold mb-4">Profile</h2>
           <ul>
@@ -38,34 +46,18 @@ const Profile = () => {
                 Transactions
               </a>
             </li>
-            <li className="mb-2">
-              <a
-                href="#"
-                className="block p-2 bg-gray-700 rounded hover:bg-gray-600"
-              >
-                Inbox
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block p-2 bg-gray-700 rounded hover:bg-gray-600"
-              >
-                Bonus Cases
-              </a>
-            </li>
           </ul>
         </div>
 
-        {/* Main Content */}
         <div className="w-3/4 ml-8 bg-gray-800 p-6 rounded-lg">
           {/* Profile Info */}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center">
               <img
-                src={user?.avatarUrl || "/profile.png"} // Use user avatar if available
+                src={user?.profileImage || "/profile.png"}
                 alt="Profile"
-                className="w-16 h-16 rounded-full mr-4"
+                className="w-24 h-24 rounded-full mr-4 cursor-pointer object-cover border-2 border-gray-700 shadow-lg"
+                onClick={handleOpenModal}
               />
               <div>
                 <h2 className="text-xl font-bold">
@@ -153,6 +145,10 @@ const Profile = () => {
               </div>
             </div>
           </div>
+          <ProfilePictureUploadModal
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+          />
         </div>
       </div>
     </div>

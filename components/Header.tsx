@@ -62,9 +62,9 @@ const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
           href={pathname !== "/profile" ? "/profile" : "#"}
           className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden"
         >
-          {user?.avatarUrl ? (
+          {user?.profileImage ? (
             <img
-              src={user.avatarUrl}
+              src={user.profileImage}
               alt="Profile"
               className="w-full h-full object-cover"
             />

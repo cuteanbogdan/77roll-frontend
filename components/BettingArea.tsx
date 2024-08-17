@@ -71,7 +71,7 @@ const BettingArea: React.FC<{
                   >
                     <span className="flex items-center gap-2">
                       <img
-                        src={bet.userId.avatarUrl}
+                        src={bet.userId.profileImage}
                         alt="avatar"
                         className="w-8 h-8 rounded-full"
                       />
