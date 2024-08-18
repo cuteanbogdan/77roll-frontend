@@ -1,4 +1,7 @@
-import { uploadProfilePictureService } from "../services/userService";
+import {
+  getUserByIdService,
+  uploadProfilePictureService,
+} from "../services/userService";
 
 export const uploadProfilePicture = async (
   userId: string,
@@ -14,5 +17,20 @@ export const uploadProfilePicture = async (
   } catch (error) {
     console.error("Error uploading the image", error);
     return null;
+  }
+};
+
+export const getUserById = async (userId: string) => {
+  try {
+    const user = await getUserByIdService(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user;
+  } catch (error) {
+    console.error("Error fetching user", error);
+    throw new Error("Error fetching user: " + error);
   }
 };

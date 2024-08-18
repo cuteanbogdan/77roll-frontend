@@ -60,8 +60,6 @@ export const useSocketListeners = (
       dispatch({ type: "SET_BETTING_OPEN", payload: false });
     });
 
-    SocketService.emit("get-all-bets", {});
-
     SocketService.on("bet-updated", (updatedBets: any[]) => {
       if (updatedBets && updatedBets.length > 0) {
         dispatch({ type: "SET_BETS", payload: updatedBets });

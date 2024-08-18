@@ -12,4 +12,10 @@ export interface User {
   email: string;
   balance: number;
   profileImage: string;
+  rank: string;
+  experience: number;
+  level: number;
+  xpToNextLevel: number;
+  totalBets: number;
+  totalBetRoulette: number;
 }

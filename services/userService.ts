@@ -15,7 +15,8 @@ export const uploadProfilePictureService = (userId: string, file: File) => {
   );
 };
 
-export const getUserById = (userId: string) => api.get(`/api/users/${userId}`);
+export const getUserByIdService = (userId: string) =>
+  api.get(`/api/users/${userId}`);
 
 export const updateUserById = (userId: string, data: any) =>
   api.put(`/api/users/${userId}`, data);

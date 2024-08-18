@@ -1,14 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfilePictureUploadModal from "@/components/profile/ProfilePictureUploadModal";
 import { useAuth } from "@/contexts/AuthContext";
 import Header from "../../components/Header";
 import { FaCoins } from "react-icons/fa";
+import { getUserById } from "@/handlers/userHandler";
+import { User } from "@/types/auth";
 
 const Profile: React.FC = () => {
-  const { user, logout, loading } = useAuth();
+  const { user, setUser, logout, loading } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user?._id) {
+        try {
+          const response = await getUserById(user._id);
+          const fetchedUser: User = response.data;
+          if (fetchedUser) {
+            setUser(fetchedUser);
+          }
+        } catch (error) {
+          console.error("Failed to fetch user data", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user?._id, setUser]);
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -63,17 +83,27 @@ const Profile: React.FC = () => {
                 <h2 className="text-xl font-bold">
                   {user?.username || "User"}
                 </h2>
-                <p className="text-gray-400">Level 3 • Rank: Rust</p>
+                <p className="text-gray-400">
+                  Level {user?.level} • Rank: {user?.rank}
+                </p>
               </div>
             </div>
             <div className="w-full max-w-xs">
               <div className="text-right text-sm text-gray-400 mb-1">
-                Experience: 28 / 250
+                Experience: {user?.experience.toFixed(0)} /{" "}
+                {((user?.xpToNextLevel ?? 0) + (user?.experience ?? 0)).toFixed(
+                  0
+                )}
               </div>
               <div className="w-full bg-gray-600 rounded-full h-2">
                 <div
                   className="bg-red-500 h-2 rounded-full"
-                  style={{ width: "11.2%" }}
+                  style={{
+                    width: `${
+                      ((user?.experience || 0) / (user?.xpToNextLevel || 1)) *
+                      100
+                    }%`,
+                  }}
                 ></div>
               </div>
             </div>
@@ -87,7 +117,7 @@ const Profile: React.FC = () => {
                 <span>Total Bets</span>
                 <span className="flex items-center">
                   <FaCoins className="text-yellow-500 mr-2" />
-                  6.70
+                  {user?.totalBets?.toFixed(2) || "0.00"}
                 </span>
               </div>
             </div>
@@ -96,16 +126,7 @@ const Profile: React.FC = () => {
                 <span>Total Bet Roulette</span>
                 <span className="flex items-center">
                   <FaCoins className="text-yellow-500 mr-2" />
-                  0.50
-                </span>
-              </div>
-            </div>
-            <div className="bg-gray-700 p-4 rounded-lg">
-              <div className="flex justify-between">
-                <span>Total Bet Coinflip</span>
-                <span className="flex items-center">
-                  <FaCoins className="text-yellow-500 mr-2" />
-                  6.20
+                  {user?.totalBetRoulette?.toFixed(2) || "0.00"}
                 </span>
               </div>
             </div>
