@@ -19,3 +19,11 @@ export interface User {
   totalBets: number;
   totalBetRoulette: number;
 }
+
+export interface Transaction {
+  _id: string;
+  userId: string;
+  type: string;
+  amount: number;
+  date: Date;
+}
