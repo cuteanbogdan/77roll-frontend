@@ -73,7 +73,7 @@ const BettingArea: React.FC<{
                       <img
                         src={bet.userId.profileImage}
                         alt="avatar"
-                        className="w-8 h-8 rounded-full"
+                        className="w-8 h-8 rounded-full object-cover"
                       />
                       {bet.userId.username}
                     </span>

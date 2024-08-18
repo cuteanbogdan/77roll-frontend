@@ -100,7 +100,9 @@ const Profile: React.FC = () => {
                   className="bg-red-500 h-2 rounded-full"
                   style={{
                     width: `${
-                      ((user?.experience || 0) / (user?.xpToNextLevel || 1)) *
+                      ((user?.experience || 0) /
+                        ((user?.xpToNextLevel ?? 0) + (user?.experience ?? 0) ||
+                          1)) *
                       100
                     }%`,
                   }}
