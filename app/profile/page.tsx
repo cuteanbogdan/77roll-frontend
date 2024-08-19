@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import ProfilePictureUploadModal from "@/components/profile/ProfilePictureUploadModal";
 import { useAuth } from "@/contexts/AuthContext";
-import Header from "../../components/Header";
+import Header from "../../components/shared/Header";
 import { FaCoins } from "react-icons/fa";
 import { getUserById } from "@/handlers/userHandler";
 import { User, Transaction } from "@/types/auth";

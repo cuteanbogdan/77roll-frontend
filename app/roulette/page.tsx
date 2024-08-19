@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useReducer, useState, useEffect } from "react";
-import Header from "@/components/Header";
-import GameInfo from "@/components/GameInfo";
-import RouletteDisplay from "@/components/RouletteDisplay";
-import BettingArea from "@/components/BettingArea";
-import HistoryArea from "@/components/HistoryArea";
-import BettingControl from "@/components/BettingControl";
+import Header from "@/components/shared/Header";
+import GameInfo from "@/components/roulette/GameInfo";
+import RouletteDisplay from "@/components/roulette/RouletteDisplay";
+import BettingArea from "@/components/roulette/BettingArea";
+import HistoryArea from "@/components/roulette/HistoryArea";
+import BettingControl from "@/components/roulette/BettingControl";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { reducer, initialState } from "@/contexts/stateManagement";
