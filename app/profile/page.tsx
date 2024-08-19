@@ -14,6 +14,29 @@ const Profile: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [viewingTransactions, setViewingTransactions] = useState(false);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const transactionsPerPage = 10;
+
+  const indexOfLastTransaction = currentPage * transactionsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const currentTransactions = transactions.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
+  );
+
+  const totalPages = Math.ceil(transactions.length / transactionsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -159,11 +182,11 @@ const Profile: React.FC = () => {
           ) : (
             <div className="mb-8">
               <h3 className="text-lg font-bold mb-4">Transactions</h3>
-              {transactions.length > 0 ? (
-                transactions.map((transaction) => (
+              {currentTransactions.length > 0 ? (
+                currentTransactions.map((transaction) => (
                   <div
                     key={transaction._id}
-                    className="bg-gray-700 p-4 rounded-lg mb-4"
+                    className="bg-gray-700 p-2 rounded-lg mb-2"
                   >
                     <div className="flex justify-between">
                       <span>{transaction.type}</span>
@@ -186,6 +209,26 @@ const Profile: React.FC = () => {
               ) : (
                 <p className="text-gray-400">No transactions found.</p>
               )}
+
+              <div className="flex justify-between mt-4">
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 disabled:opacity-50"
+                >
+                  Previous
+                </button>
+                <span className="text-gray-400">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           )}
 
