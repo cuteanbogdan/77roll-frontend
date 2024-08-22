@@ -1,77 +1,26 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ProfilePictureUploadModal from "@/components/profile/ProfilePictureUploadModal";
 import { useAuth } from "@/contexts/AuthContext";
 import Header from "../../components/shared/Header";
-import { getUserById } from "@/handlers/userHandler";
-import { getUserTransactions } from "@/handlers/transactionHandler";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStatistics from "@/components/profile/ProfileStatistics";
 import TransactionsList from "@/components/profile/TransactionsList";
-import { User, Transaction } from "@/types/auth";
+import { useTransactions } from "@/hooks/useTransactions";
 
 const Profile: React.FC = () => {
-  const { user, setUser, logout, loading } = useAuth();
+  const { user, logout, loading } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
   const [viewingTransactions, setViewingTransactions] = useState(false);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const transactionsPerPage = 10;
 
-  const indexOfLastTransaction = currentPage * transactionsPerPage;
-  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
-  const currentTransactions = transactions.slice(
-    indexOfFirstTransaction,
-    indexOfLastTransaction
-  );
-
-  const totalPages = Math.ceil(transactions.length / transactionsPerPage);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (user?._id) {
-        try {
-          const response = await getUserById(user._id);
-          const fetchedUser: User = response.data;
-          if (fetchedUser) {
-            setUser(fetchedUser);
-          }
-        } catch (error) {
-          console.error("Failed to fetch user data", error);
-        }
-      }
-    };
-
-    fetchUserData();
-  }, [user?._id, setUser]);
-
-  useEffect(() => {
-    if (viewingTransactions && user?._id) {
-      const fetchTransactions = async () => {
-        try {
-          const response = await getUserTransactions(user._id);
-          setTransactions(response.data);
-        } catch (error) {
-          console.error("Failed to fetch transactions", error);
-        }
-      };
-
-      fetchTransactions();
-    }
-  }, [viewingTransactions, user?._id]);
+  const {
+    transactions,
+    currentPage,
+    totalPages,
+    handleNextPage,
+    handlePreviousPage,
+  } = useTransactions(user?._id, viewingTransactions);
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -122,7 +71,7 @@ const Profile: React.FC = () => {
             </>
           ) : (
             <TransactionsList
-              transactions={currentTransactions}
+              transactions={transactions}
               currentPage={currentPage}
               totalPages={totalPages}
               handleNextPage={handleNextPage}
