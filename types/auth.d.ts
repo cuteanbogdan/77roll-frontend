@@ -27,3 +27,11 @@ export interface Transaction {
   amount: number;
   date: Date;
 }
+
+export interface Message {
+  userId: string;
+  username: string;
+  text: string;
+  level: number;
+  profileImage: string;
+}

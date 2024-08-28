@@ -4,6 +4,7 @@ interface StateType {
   targetNumber: number;
   roundNumber: number;
   bettingOpen: boolean;
+  messages: Message[];
 }
 
 interface RouletteNumber {

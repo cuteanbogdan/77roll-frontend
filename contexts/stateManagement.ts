@@ -1,3 +1,5 @@
+import { Message } from "@/types/auth";
+
 export type ActionType =
   | { type: "SET_BETS"; payload: any[] }
   | { type: "CLEAR_BETS" }
@@ -7,7 +9,9 @@ export type ActionType =
       payload: { number: number };
     }
   | { type: "SET_ROUND_NUMBER"; payload: number }
-  | { type: "SET_BETTING_OPEN"; payload: boolean };
+  | { type: "SET_BETTING_OPEN"; payload: boolean }
+  | { type: "SET_MESSAGES"; payload: Message[] }
+  | { type: "ADD_MESSAGE"; payload: Message };
 
 export const initialState: StateType = {
   bets: [],
@@ -15,6 +19,7 @@ export const initialState: StateType = {
   targetNumber: 1,
   roundNumber: 0,
   bettingOpen: true,
+  messages: [],
 };
 
 export function reducer(state: StateType, action: ActionType): StateType {
@@ -34,6 +39,12 @@ export function reducer(state: StateType, action: ActionType): StateType {
       return { ...state, roundNumber: action.payload };
     case "SET_BETTING_OPEN":
       return { ...state, bettingOpen: action.payload };
+
+    case "SET_MESSAGES":
+      return { ...state, messages: action.payload };
+    case "ADD_MESSAGE":
+      return { ...state, messages: [...state.messages, action.payload] };
+
     default:
       return state;
   }

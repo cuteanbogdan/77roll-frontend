@@ -13,6 +13,7 @@ import { reducer, initialState } from "@/contexts/stateManagement";
 import { useSocketListeners } from "@/events/socketEvents";
 import { placeBet, rouletteNumbers } from "@/utils/bettingUtils";
 import SocketService from "@/services/socketService";
+import Chat from "@/components/shared/chat/Chat";
 
 const HomePage: React.FC = () => {
   const { user, loading: authLoading, setUser, logout } = useAuth();
@@ -47,37 +48,49 @@ const HomePage: React.FC = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-gray-900 flex flex-col">
         <Header
           balance={user?.balance || 0}
           loading={authLoading}
           user={user}
           logout={logout}
         />
-        <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
-          <GameInfo roundNumber={state.roundNumber + 1} />
-          <div className="flex justify-center mx-auto overflow-hidden mb-8">
-            <RouletteDisplay
-              numbers={rouletteNumbers}
-              targetNumber={state.targetNumber}
-              roundNumber={state.roundNumber}
-              onAnimationComplete={handleAnimationComplete}
-              loading={loading}
-            />
-          </div>
-          <div className="flex justify-center">
-            <HistoryArea history={state.history} />
+
+        <div className="flex flex-1">
+          <div className="w-full md:w-1/5 p-4 h-[90vh] overflow-y-auto bg-gray-800 rounded-lg">
+            <Chat user={user} state={state} />
           </div>
 
-          <div className="py-4 bg-gray-900 flex justify-center items-center mb-2 w-full">
-            <BettingControl betAmount={betAmount} setBetAmount={setBetAmount} />
+          <div className="flex flex-col w-full md:w-3/4">
+            <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
+              <GameInfo roundNumber={state.roundNumber + 1} />
+              <div className="flex justify-center mx-auto overflow-hidden mb-8">
+                <RouletteDisplay
+                  numbers={rouletteNumbers}
+                  targetNumber={state.targetNumber}
+                  roundNumber={state.roundNumber}
+                  onAnimationComplete={handleAnimationComplete}
+                  loading={loading}
+                />
+              </div>
+              <div className="flex justify-center">
+                <HistoryArea history={state.history} />
+              </div>
+
+              <div className="py-4 bg-gray-900 flex justify-center items-center mb-2 w-full">
+                <BettingControl
+                  betAmount={betAmount}
+                  setBetAmount={setBetAmount}
+                />
+              </div>
+              <BettingArea
+                bets={state.bets}
+                placeBet={handlePlaceBet}
+                bettingOpen={state.bettingOpen && !loading}
+              />
+            </main>
           </div>
-          <BettingArea
-            bets={state.bets}
-            placeBet={handlePlaceBet}
-            bettingOpen={state.bettingOpen && !loading}
-          />
-        </main>
+        </div>
       </div>
     </ProtectedRoute>
   );

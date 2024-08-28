@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, Dispatch } from "react";
 import SocketService from "@/services/socketService";
-import { Dispatch } from "react";
 import { ActionType } from "../contexts/stateManagement";
+import { Message } from "@/types/auth";
 
 export const useSocketListeners = (
   dispatch: Dispatch<ActionType>,
@@ -96,6 +96,11 @@ export const useSocketListeners = (
       dispatch({ type: "SET_HISTORY", payload: updatedHistory });
     });
 
+    SocketService.on("receive-message", (message: Message) => {
+      console.log(message);
+      dispatch({ type: "ADD_MESSAGE", payload: message });
+    });
+
     return () => {
       SocketService.off("initial-state");
       SocketService.off("roulette-result");
@@ -108,6 +113,7 @@ export const useSocketListeners = (
       SocketService.off("clear-bets");
       SocketService.off("bet-error");
       SocketService.off("updated-history");
+      SocketService.off("receive-message");
     };
   }, [user, setUser, dispatch]);
 };
