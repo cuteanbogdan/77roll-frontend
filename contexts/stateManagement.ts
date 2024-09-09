@@ -1,4 +1,6 @@
 import { Message } from "@/types/auth";
+import { CoinflipStateType, StateType } from "@/types/roulette";
+import { BiMessage } from "react-icons/bi";
 
 export type ActionType =
   | { type: "SET_BETS"; payload: any[] }
@@ -9,7 +11,14 @@ export type ActionType =
       payload: { number: number };
     }
   | { type: "SET_ROUND_NUMBER"; payload: number }
-  | { type: "SET_BETTING_OPEN"; payload: boolean }
+  | { type: "SET_BETTING_OPEN"; payload: boolean };
+
+export type CoinflipActionType =
+  | { type: "SET_ROOMS"; payload: any[] }
+  | { type: "ADD_ROOM"; payload: any }
+  | { type: "CLEAR_ROOMS" };
+
+export type MessagesActionType =
   | { type: "SET_MESSAGES"; payload: Message[] }
   | { type: "ADD_MESSAGE"; payload: Message };
 
@@ -19,7 +28,14 @@ export const initialState: StateType = {
   targetNumber: 1,
   roundNumber: 0,
   bettingOpen: true,
-  messages: [],
+};
+
+export const initialMessagesState = {
+  messages: [] as Message[],
+};
+
+export const initialCoinflipState: CoinflipStateType = {
+  rooms: [],
 };
 
 export function reducer(state: StateType, action: ActionType): StateType {
@@ -39,12 +55,36 @@ export function reducer(state: StateType, action: ActionType): StateType {
       return { ...state, roundNumber: action.payload };
     case "SET_BETTING_OPEN":
       return { ...state, bettingOpen: action.payload };
+    default:
+      return state;
+  }
+}
 
+export function coinflipReducer(
+  state: CoinflipStateType,
+  action: CoinflipActionType
+): CoinflipStateType {
+  switch (action.type) {
+    case "SET_ROOMS":
+      return { ...state, rooms: action.payload };
+    case "ADD_ROOM":
+      return { ...state, rooms: [...state.rooms, action.payload] };
+    case "CLEAR_ROOMS":
+      return { ...state, rooms: [] };
+    default:
+      return state;
+  }
+}
+
+export function messagesReducer(
+  state = initialMessagesState,
+  action: MessagesActionType
+) {
+  switch (action.type) {
     case "SET_MESSAGES":
       return { ...state, messages: action.payload };
     case "ADD_MESSAGE":
       return { ...state, messages: [...state.messages, action.payload] };
-
     default:
       return state;
   }

@@ -1,10 +1,16 @@
-interface StateType {
+export interface BaseStateType {
+  messages: Message[];
+}
+export interface StateType {
   bets: any[];
   history: number[];
   targetNumber: number;
   roundNumber: number;
   bettingOpen: boolean;
-  messages: Message[];
+}
+
+export interface CoinflipStateType {
+  rooms: any[];
 }
 
 interface RouletteNumber {

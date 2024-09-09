@@ -96,11 +96,6 @@ export const useSocketListeners = (
       dispatch({ type: "SET_HISTORY", payload: updatedHistory });
     });
 
-    SocketService.on("receive-message", (message: Message) => {
-      console.log(message);
-      dispatch({ type: "ADD_MESSAGE", payload: message });
-    });
-
     return () => {
       SocketService.off("initial-state");
       SocketService.off("roulette-result");
@@ -113,7 +108,6 @@ export const useSocketListeners = (
       SocketService.off("clear-bets");
       SocketService.off("bet-error");
       SocketService.off("updated-history");
-      SocketService.off("receive-message");
     };
   }, [user, setUser, dispatch]);
 };

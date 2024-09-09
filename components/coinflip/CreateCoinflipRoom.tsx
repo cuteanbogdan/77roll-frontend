@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { FaCoins } from "react-icons/fa";
 
-const CreateCoinflipRoom: React.FC = () => {
-  const [betAmount, setBetAmount] = useState(0.01);
-  const [choice, setChoice] = useState<"heads" | "tails">("heads");
-
+const CreateCoinflipRoom: React.FC<{
+  betAmount: number;
+  setBetAmount: (amount: number) => void;
+  choice: "heads" | "tails";
+  setChoice: (choice: "heads" | "tails") => void;
+  handleCreateRoom: () => void;
+}> = ({ betAmount, setBetAmount, choice, setChoice, handleCreateRoom }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setBetAmount(isNaN(value) ? 0 : Math.max(0.01, Math.min(value, 100)));
@@ -32,10 +35,6 @@ const CreateCoinflipRoom: React.FC = () => {
         break;
     }
     setBetAmount(newBetAmount);
-  };
-
-  const handleCreateRoom = () => {
-    // Emit event to create room
   };
 
   return (

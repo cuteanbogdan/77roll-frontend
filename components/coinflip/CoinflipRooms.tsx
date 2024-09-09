@@ -1,15 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-interface Room {
-  _id: string;
-  creatorId: string;
-  betAmount: number;
-  status: "waiting" | "playing" | "finished";
-}
-
-const CoinflipRooms: React.FC = () => {
-  const [rooms, setRooms] = useState<Room[]>([]);
-
+const CoinflipRooms: React.FC<{ rooms: any[] }> = ({ rooms }) => {
   return (
     <div className="flex-1 p-4 h-[80.4vh] overflow-y-auto bg-gray-800 rounded-lg">
       <h2 className="text-white text-xl mb-4">Coinflip Rooms</h2>

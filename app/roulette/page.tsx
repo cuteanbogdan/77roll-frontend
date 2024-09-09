@@ -9,21 +9,31 @@ import HistoryArea from "@/components/roulette/HistoryArea";
 import BettingControl from "@/components/roulette/BettingControl";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
-import { reducer, initialState } from "@/contexts/stateManagement";
+import {
+  reducer,
+  initialState,
+  initialMessagesState,
+  messagesReducer,
+} from "@/contexts/stateManagement";
 import { useSocketListeners } from "@/events/socketEvents";
 import { placeBet, rouletteNumbers } from "@/utils/bettingUtils";
 import SocketService from "@/services/socketService";
 import Chat from "@/components/shared/chat/Chat";
+import { useMessageSocketListeners } from "@/events/messagesSocketEvents";
 
 const HomePage: React.FC = () => {
   const { user, loading: authLoading, setUser, logout } = useAuth();
   const [betAmount, setBetAmount] = useState(0.01);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [stateMessages, dispatchMessages] = useReducer(
+    messagesReducer,
+    initialMessagesState
+  );
   const [loading, setLoading] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   useSocketListeners(dispatch, setUser, user);
-
+  useMessageSocketListeners(dispatchMessages, user);
   useEffect(() => {
     if (isFirstLoad) {
       setLoading(true);
@@ -58,7 +68,7 @@ const HomePage: React.FC = () => {
 
         <div className="flex flex-1">
           <div className="w-full md:w-1/5 p-4 h-[90vh] overflow-y-auto bg-gray-800 rounded-lg">
-            <Chat user={user} state={state} />
+            <Chat user={user} state={stateMessages} />
           </div>
 
           <div className="flex flex-col w-full md:w-3/4">

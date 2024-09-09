@@ -1,21 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import SocketService from "@/services/socketService";
 import { User } from "@/types/auth";
-import { ActionType } from "@/contexts/stateManagement";
+import { BaseStateType } from "@/types/roulette";
 
 interface ChatProps {
   user: User | null;
-  state: StateType;
+  state: BaseStateType;
 }
 
 const Chat: React.FC<ChatProps> = ({ user, state }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState("");
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [state.messages]);
 
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return;
