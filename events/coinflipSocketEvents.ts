@@ -1,6 +1,7 @@
 import { useEffect, useRef, Dispatch } from "react";
 import SocketService from "@/services/socketService";
 import { CoinflipActionType } from "../contexts/stateManagement";
+import socketService from "@/services/socketService";
 
 export const useCoinflipSocketListeners = (
   dispatch: Dispatch<CoinflipActionType>,
@@ -14,6 +15,10 @@ export const useCoinflipSocketListeners = (
       SocketService.registerUser(user._id);
 
       SocketService.emit("get-rooms", {});
+
+      SocketService.on("rooms-updated", (rooms: any[]) => {
+        dispatch({ type: "SET_ROOMS", payload: rooms });
+      });
 
       initialStateLoadedRef.current = true;
     }
@@ -30,10 +35,14 @@ export const useCoinflipSocketListeners = (
         });
       }
     });
+    SocketService.on("room-error", (error) => {
+      alert(`Error creating room: ${error.message}`);
+    });
 
     return () => {
       SocketService.off("rooms-updated");
       SocketService.off("balance-updated");
+      socketService.off("room-error");
     };
   }, [user, setUser, dispatch]);
 };

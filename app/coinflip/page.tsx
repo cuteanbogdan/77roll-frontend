@@ -15,6 +15,7 @@ import {
 import CreateCoinflipRoom from "@/components/coinflip/CreateCoinflipRoom";
 import { useCoinflipSocketListeners } from "@/events/coinflipSocketEvents";
 import { useMessageSocketListeners } from "@/events/messagesSocketEvents";
+import socketService from "@/services/socketService";
 
 const CoinflipPage: React.FC = () => {
   const { user, loading: authLoading, logout, setUser } = useAuth();
@@ -31,7 +32,34 @@ const CoinflipPage: React.FC = () => {
   useMessageSocketListeners(dispatchMessages, user);
 
   const handleCreateRoom = () => {
-    // Emit event to create room
+    if (user && betAmount > 0 && choice) {
+      socketService.emit("create-room-coinflip", {
+        userId: user._id,
+        choice,
+        betAmount,
+      });
+    } else {
+      alert("Invalid bet or choice");
+    }
+  };
+
+  const handleJoinRoom = (roomId: string) => {
+    if (user && roomId) {
+      socketService.emit("join-room-coinflip", {
+        roomId,
+        userId: user._id,
+      });
+
+      socketService.on("room-joined", (updatedRoom) => {
+        dispatch({ type: "UPDATE_ROOM", payload: updatedRoom });
+
+        socketService.on("game-result", (result) => {
+          dispatch({ type: "SET_GAME_RESULT", payload: result });
+        });
+      });
+    } else {
+      alert("Unable to join the room.");
+    }
   };
 
   return (
@@ -58,7 +86,7 @@ const CoinflipPage: React.FC = () => {
               handleCreateRoom={handleCreateRoom}
             />
 
-            <CoinflipRooms rooms={state.rooms} />
+            <CoinflipRooms rooms={state.rooms} onJoinRoom={handleJoinRoom} />
           </div>
         </div>
       </div>

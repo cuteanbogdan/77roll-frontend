@@ -1,23 +1,20 @@
 import React from "react";
+import CoinflipRoomDisplay from "./CoinflipRoomDisplay";
 
-const CoinflipRooms: React.FC<{ rooms: any[] }> = ({ rooms }) => {
+const CoinflipRooms: React.FC<{
+  rooms: any[];
+  onJoinRoom: (roomId: string) => void;
+}> = ({ rooms, onJoinRoom }) => {
   return (
     <div className="flex-1 p-4 h-[80.4vh] overflow-y-auto bg-gray-800 rounded-lg">
       <h2 className="text-white text-xl mb-4">Coinflip Rooms</h2>
-      {rooms.map((room) => (
-        <div
-          key={room._id}
-          className="p-4 mb-4 bg-gray-700 rounded-lg flex justify-between items-center"
-        >
-          <div>
-            <p className="text-white">Room ID: {room._id}</p>
-            <p className="text-white">Bet Amount: {room.betAmount}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {rooms.map((room) => (
+          <div key={room._id} className="max-w-lg w-full">
+            <CoinflipRoomDisplay room={room} onJoinRoom={onJoinRoom} />
           </div>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
-            Join
-          </button>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

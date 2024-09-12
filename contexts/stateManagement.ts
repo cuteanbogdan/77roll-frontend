@@ -1,6 +1,5 @@
 import { Message } from "@/types/auth";
 import { CoinflipStateType, StateType } from "@/types/roulette";
-import { BiMessage } from "react-icons/bi";
 
 export type ActionType =
   | { type: "SET_BETS"; payload: any[] }
@@ -16,7 +15,9 @@ export type ActionType =
 export type CoinflipActionType =
   | { type: "SET_ROOMS"; payload: any[] }
   | { type: "ADD_ROOM"; payload: any }
-  | { type: "CLEAR_ROOMS" };
+  | { type: "UPDATE_ROOM"; payload: any }
+  | { type: "CLEAR_ROOMS" }
+  | { type: "SET_GAME_RESULT"; payload: { roomId: string; result: string } };
 
 export type MessagesActionType =
   | { type: "SET_MESSAGES"; payload: Message[] }
@@ -69,8 +70,22 @@ export function coinflipReducer(
       return { ...state, rooms: action.payload };
     case "ADD_ROOM":
       return { ...state, rooms: [...state.rooms, action.payload] };
-    case "CLEAR_ROOMS":
-      return { ...state, rooms: [] };
+    case "UPDATE_ROOM":
+      return {
+        ...state,
+        rooms: state.rooms.map((room) =>
+          room._id === action.payload._id ? action.payload : room
+        ),
+      };
+    case "SET_GAME_RESULT":
+      return {
+        ...state,
+        rooms: state.rooms.map((room) =>
+          room._id === action.payload.roomId
+            ? { ...room, result: action.payload.result, isFlipping: false }
+            : room
+        ),
+      };
     default:
       return state;
   }
