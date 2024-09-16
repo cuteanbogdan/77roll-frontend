@@ -7,6 +7,7 @@ const CoinflipRoomDisplay: React.FC<{
 }> = ({ room, onJoinRoom }) => {
   const [creator, setCreator] = useState<any>(null);
   const [opponent, setOpponent] = useState<any>(null);
+  const [winner, setWinner] = useState<any>(null);
 
   useEffect(() => {
     const fetchCreator = async () => {
@@ -21,9 +22,17 @@ const CoinflipRoomDisplay: React.FC<{
       }
     };
 
+    const fetchWinner = async () => {
+      if (room.winnerId) {
+        const winnerData = await getUserById(room.winnerId);
+        setWinner(winnerData.data);
+      }
+    };
+
     fetchCreator();
     fetchOpponent();
-  }, [room.creatorId, room.opponentId]);
+    fetchWinner();
+  }, [room.creatorId, room.opponentId, room.winnerId]);
 
   return (
     <div className="p-4 mb-2 bg-gray-700 rounded-lg flex justify-between items-center text-sm max-w-md mx-auto">
@@ -44,14 +53,12 @@ const CoinflipRoomDisplay: React.FC<{
       </div>
 
       <div className="flex flex-col items-center">
-        {room.isFlipping ? (
-          <img
-            src="/coin-image.png"
-            alt="coin"
-            className="w-20 h-20 animate-spin"
-          />
+        {winner ? (
+          <p className="text-white">Winner: {winner.username}</p>
+        ) : room.isFlipping ? (
+          <p className="text-white">Coin is flipping...</p>
         ) : opponent ? (
-          <p>Coinflip started...</p>
+          <p className="text-white">Coinflip started...</p>
         ) : (
           <>
             <button
@@ -75,7 +82,6 @@ const CoinflipRoomDisplay: React.FC<{
             />
             <p className="text-white">{opponent.username}</p>
             <p className="text-yellow-500">Level: {opponent.level}</p>
-            <p className="text-green-500">{opponent.balance}</p>
           </>
         ) : (
           <>
@@ -85,7 +91,7 @@ const CoinflipRoomDisplay: React.FC<{
               className="w-16 h-16 rounded-full mb-2 object-cover"
             />
             <p className="text-white">-</p>
-            <p className="text-yellow-500">Level: -</p>{" "}
+            <p className="text-yellow-500">Level: -</p>
           </>
         )}
       </div>

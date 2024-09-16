@@ -17,7 +17,11 @@ export type CoinflipActionType =
   | { type: "ADD_ROOM"; payload: any }
   | { type: "UPDATE_ROOM"; payload: any }
   | { type: "CLEAR_ROOMS" }
-  | { type: "SET_GAME_RESULT"; payload: { roomId: string; result: string } };
+  | {
+      type: "SET_GAME_RESULT";
+      payload: { roomId: string; winnerId: string; outcome: string };
+    }
+  | { type: "REMOVE_ROOM"; payload: string };
 
 export type MessagesActionType =
   | { type: "SET_MESSAGES"; payload: Message[] }
@@ -82,10 +86,21 @@ export function coinflipReducer(
         ...state,
         rooms: state.rooms.map((room) =>
           room._id === action.payload.roomId
-            ? { ...room, result: action.payload.result, isFlipping: false }
+            ? {
+                ...room,
+                winnerId: action.payload.winnerId,
+                outcome: action.payload.outcome,
+                isFlipping: false,
+              }
             : room
         ),
       };
+    case "REMOVE_ROOM":
+      return {
+        ...state,
+        rooms: state.rooms.filter((room) => room._id !== action.payload),
+      };
+
     default:
       return state;
   }
