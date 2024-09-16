@@ -35,6 +35,11 @@ export const useCoinflipSocketListeners = (
         });
       }
     });
+
+    socketService.on("room-deleted", ({ roomId }) => {
+      dispatch({ type: "REMOVE_ROOM", payload: roomId });
+    });
+
     SocketService.on("room-error", (error) => {
       alert(`Error creating room: ${error.message}`);
     });
