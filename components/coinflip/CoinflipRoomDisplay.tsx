@@ -46,6 +46,7 @@ const CoinflipRoomDisplay: React.FC<{
             />
             <p className="text-white">{creator.username}</p>
             <p className="text-yellow-500">Level: {creator.level}</p>
+            <p className="text-yellow-500">Choice: {room.creatorChoice}</p>
           </>
         ) : (
           <p className="text-white">Loading creator...</p>
@@ -53,9 +54,9 @@ const CoinflipRoomDisplay: React.FC<{
       </div>
 
       <div className="flex flex-col items-center">
-        {winner ? (
+        {room.status === "finished" && winner ? (
           <p className="text-white">Winner: {winner.username}</p>
-        ) : room.isFlipping ? (
+        ) : room.status === "playing" ? (
           <p className="text-white">Coin is flipping...</p>
         ) : opponent ? (
           <p className="text-white">Coinflip started...</p>
@@ -82,6 +83,7 @@ const CoinflipRoomDisplay: React.FC<{
             />
             <p className="text-white">{opponent.username}</p>
             <p className="text-yellow-500">Level: {opponent.level}</p>
+            <p className="text-yellow-500">Choice: {room.opponentChoice}</p>
           </>
         ) : (
           <>

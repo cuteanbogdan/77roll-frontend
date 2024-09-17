@@ -36,6 +36,10 @@ export const useCoinflipSocketListeners = (
       }
     });
 
+    socketService.on("game-result", (result) => {
+      dispatch({ type: "SET_GAME_RESULT", payload: result });
+    });
+
     socketService.on("room-deleted", ({ roomId }) => {
       dispatch({ type: "REMOVE_ROOM", payload: roomId });
     });
@@ -47,6 +51,7 @@ export const useCoinflipSocketListeners = (
     return () => {
       SocketService.off("rooms-updated");
       SocketService.off("balance-updated");
+      socketService.off("game-result");
       socketService.off("room-error");
     };
   }, [user, setUser, dispatch]);

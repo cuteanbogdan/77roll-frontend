@@ -52,10 +52,6 @@ const CoinflipPage: React.FC = () => {
 
       socketService.on("room-joined", (updatedRoom) => {
         dispatch({ type: "UPDATE_ROOM", payload: updatedRoom });
-
-        socketService.on("game-result", (result) => {
-          dispatch({ type: "SET_GAME_RESULT", payload: result });
-        });
       });
     } else {
       alert("Unable to join the room.");

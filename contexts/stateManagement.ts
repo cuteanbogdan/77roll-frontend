@@ -90,7 +90,7 @@ export function coinflipReducer(
                 ...room,
                 winnerId: action.payload.winnerId,
                 outcome: action.payload.outcome,
-                isFlipping: false,
+                status: "finished",
               }
             : room
         ),
