@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import LoadingSpinner from "./LoadingSpinner";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -17,7 +18,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, [isAuthenticated, loading, router]);
 
   if (loading || !isAuthenticated) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   return <>{children}</>;
