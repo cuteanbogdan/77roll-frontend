@@ -18,6 +18,7 @@ export interface User {
   xpToNextLevel: number;
   totalBets: number;
   totalBetRoulette: number;
+  totalBetCoinflip: number;
 }
 
 export interface Transaction {
