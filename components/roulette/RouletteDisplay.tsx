@@ -76,11 +76,6 @@ const RouletteDisplay: React.FC<{
           console.log("Animation stopped.");
           onAnimationComplete();
 
-          // Wait for 2 seconds after the animation is over
-          setTimeout(() => {
-            // Emit the event to reset bets
-            SocketService.emit("reset-bets-after-animation", {});
-          }, 1000);
           clearTimeout(timeoutId);
           return;
         }
@@ -104,7 +99,6 @@ const RouletteDisplay: React.FC<{
     timeoutId = window.setTimeout(() => {
       console.log("Fallback triggered.");
       onAnimationComplete();
-      SocketService.emit("reset-bets-after-animation", {});
     }, 5000);
 
     return () => {
