@@ -19,6 +19,7 @@ export interface User {
   totalBets: number;
   totalBetRoulette: number;
   totalBetCoinflip: number;
+  clientSeed: string;
 }
 
 export interface Transaction {

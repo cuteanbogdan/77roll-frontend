@@ -9,6 +9,7 @@ import ProfileStatistics from "@/components/profile/ProfileStatistics";
 import TransactionsList from "@/components/profile/TransactionsList";
 import { useTransactions } from "@/hooks/useTransactions";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
+import AccountSettings from "@/components/profile/AccountSettings";
 
 const Profile: React.FC = () => {
   const { user, logout, loading } = useAuth();
@@ -70,6 +71,7 @@ const Profile: React.FC = () => {
               <>
                 <ProfileHeader user={user} onOpenModal={handleOpenModal} />
                 <ProfileStatistics user={user} />
+                <AccountSettings user={user} />
               </>
             ) : (
               <TransactionsList

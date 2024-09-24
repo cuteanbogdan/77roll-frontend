@@ -1,5 +1,6 @@
 import {
   getUserByIdService,
+  updateUserByIdService,
   uploadProfilePictureService,
 } from "../services/userService";
 
@@ -32,5 +33,20 @@ export const getUserById = async (userId: string) => {
   } catch (error) {
     console.error("Error fetching user", error);
     throw new Error("Error fetching user: " + error);
+  }
+};
+
+export const updateUserById = async (userId: string, data: any) => {
+  try {
+    const updatedUser = await updateUserByIdService(userId, data);
+
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user", error);
+    throw new Error("Error updating user: " + error);
   }
 };
