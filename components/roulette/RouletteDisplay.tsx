@@ -96,14 +96,8 @@ const RouletteDisplay: React.FC<{
     );
     animationFrameId = requestAnimationFrame(animate);
 
-    timeoutId = window.setTimeout(() => {
-      console.log("Fallback triggered.");
-      onAnimationComplete();
-    }, 5000);
-
     return () => {
       cancelAnimationFrame(animationFrameId);
-      clearTimeout(timeoutId);
     };
   }, [targetNumber, roundNumber, numbers]);
 
