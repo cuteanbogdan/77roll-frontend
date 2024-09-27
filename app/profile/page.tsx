@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProfilePictureUploadModal from "@/components/profile/ProfilePictureUploadModal";
 import { useAuth } from "@/contexts/AuthContext";
 import Header from "../../components/shared/Header";
@@ -12,11 +12,21 @@ import ProtectedRoute from "@/components/shared/ProtectedRoute";
 import AccountSettings from "@/components/profile/AccountSettings";
 import Deposit from "@/components/profile/Deposit";
 import Withdraw from "@/components/profile/Withdraw";
+import { useSearchParams } from "next/navigation";
 
 const Profile: React.FC = () => {
   const { user, logout, loading } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("details");
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const section = searchParams.get("section");
+    if (section) {
+      setActiveSection(section);
+    }
+  }, [searchParams]);
 
   const {
     transactions,
@@ -111,8 +121,8 @@ const Profile: React.FC = () => {
                 handlePreviousPage={handlePreviousPage}
               />
             )}
-            {activeSection === "deposit" && <Deposit user={user} />}{" "}
-            {/* {activeSection === "withdraw" && <Withdraw user={user} />}{" "} */}
+            {activeSection === "deposit" && <Deposit user={user} />}
+            {/* {activeSection === "withdraw" && <Withdraw user={user} />} */}
             <ProfilePictureUploadModal
               isOpen={isModalOpen}
               onClose={handleCloseModal}

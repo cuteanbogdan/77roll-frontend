@@ -36,7 +36,6 @@ const Deposit: React.FC<DepositProps> = ({ user }) => {
       );
 
       if (checkoutUrl) {
-        console.log(checkoutUrl);
         // Redirect to the payment URL
         window.location.href = checkoutUrl;
       } else {
@@ -58,7 +57,7 @@ const Deposit: React.FC<DepositProps> = ({ user }) => {
             htmlFor="amount"
             className="block text-sm font-medium text-gray-300 mb-1"
           >
-            Amount
+            Amount ($)
           </label>
           <input
             type="number"

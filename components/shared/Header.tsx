@@ -1,6 +1,5 @@
 import React from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { FaCoins, FaSignOutAlt, FaDice, FaUserCircle } from "react-icons/fa";
 import { PiCoinVerticalFill } from "react-icons/pi";
 import { MdAccountBalanceWallet } from "react-icons/md";
@@ -15,6 +14,11 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleDepositClick = () => {
+    router.push("/profile?section=deposit");
+  };
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-900">
@@ -54,7 +58,10 @@ const Header: React.FC<HeaderProps> = ({ balance, loading, user, logout }) => {
             {loading ? "Loading..." : balance.toFixed(2)}
           </span>
         </span>
-        <button className="flex items-center bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">
+        <button
+          onClick={handleDepositClick}
+          className="flex items-center bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500"
+        >
           <FaCoins className="mr-2 text-yellow-400" />
           Deposit
         </button>
