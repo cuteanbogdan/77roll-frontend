@@ -71,7 +71,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ user }) => {
           {!isEditing ? (
             <button
               onClick={handleEditClick}
-              className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none"
+              className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-500 focus:outline-none"
             >
               Modify
             </button>
