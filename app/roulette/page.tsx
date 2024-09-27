@@ -73,7 +73,7 @@ const HomePage: React.FC = () => {
 
           <div className="flex flex-col w-full md:w-3/4">
             <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
-              <GameInfo roundNumber={state.roundNumber + 1} />
+              <GameInfo roundNumber={state.roundNumber} />
               <div className="flex justify-center mx-auto overflow-hidden mb-8">
                 <RouletteDisplay
                   numbers={rouletteNumbers}
