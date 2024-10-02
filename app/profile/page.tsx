@@ -122,7 +122,7 @@ const Profile: React.FC = () => {
               />
             )}
             {activeSection === "deposit" && <Deposit user={user} />}
-            {/* {activeSection === "withdraw" && <Withdraw user={user} />} */}
+            {activeSection === "withdraw" && <Withdraw user={user} />}
             <ProfilePictureUploadModal
               isOpen={isModalOpen}
               onClose={handleCloseModal}
