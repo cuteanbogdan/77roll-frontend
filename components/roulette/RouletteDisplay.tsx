@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import SocketService from "@/services/socketService";
 import { RouletteNumber } from "@/types/roulette";
 
 const RouletteDisplay: React.FC<{

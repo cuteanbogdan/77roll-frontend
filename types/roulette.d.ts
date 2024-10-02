@@ -13,7 +13,7 @@ export interface CoinflipStateType {
   rooms: any[];
 }
 
-interface RouletteNumber {
+export interface RouletteNumber {
   number: number;
   color: "red" | "black" | "green";
 }
