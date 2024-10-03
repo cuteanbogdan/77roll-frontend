@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getUserById } from "@/handlers/userHandler";
+import defaultAvatar from "@/assets/default-avatar.jpg";
+import Image from "next/image";
 
 const CoinflipRoomDisplay: React.FC<{
   room: any;
@@ -40,7 +42,7 @@ const CoinflipRoomDisplay: React.FC<{
         {creator ? (
           <>
             <img
-              src={creator.profileImage || "/default-avatar.png"}
+              src={creator.profileImage || defaultAvatar}
               alt="creator-avatar"
               className="w-16 h-16 rounded-full mb-2 object-cover"
             />
@@ -77,7 +79,7 @@ const CoinflipRoomDisplay: React.FC<{
         {opponent ? (
           <>
             <img
-              src={opponent.profileImage || "/default-avatar.png"}
+              src={opponent.profileImage || defaultAvatar}
               alt="opponent-avatar"
               className="w-16 h-16 rounded-full mb-2 object-cover"
             />
@@ -87,13 +89,14 @@ const CoinflipRoomDisplay: React.FC<{
           </>
         ) : (
           <>
-            <img
-              src="/default-avatar.png"
+            <Image
+              src={defaultAvatar}
               alt="opponent-avatar"
               className="w-16 h-16 rounded-full mb-2 object-cover"
             />
             <p className="text-white">-</p>
             <p className="text-yellow-500">Level: -</p>
+            <p className="text-yellow-500">Choice: -</p>
           </>
         )}
       </div>
