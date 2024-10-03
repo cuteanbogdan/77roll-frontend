@@ -1,87 +1,80 @@
-# 77ROLL Frontend
+# 77Roll Frontend
 
-77ROLL is a real-time roulette game that provides an immersive experience for users. This frontend application is built using modern web technologies to deliver a responsive and interactive user interface.
+This is the frontend repository for 77Roll, a web-based gaming platform featuring games like Coinflip and Roulette. The frontend is built with Next.js and integrates with the backend API for authentication, game mechanics, and transactions.
 
-## Getting Started
+## Table of Contents
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+- [Running the App](#running-the-app)
+- [Environment Variables](#environment-variables)
 
-### Installation
+## Features
 
-First, install the necessary dependencies:
+- **User Interface**: Intuitive and responsive user interface built with React and Tailwind CSS.
+- **Real-time Gameplay**: Integration with the backend's WebSocket for real-time multiplayer Coinflip and Roulette games.
+- **Authentication**: Secure authentication flow using JWT.
+- **Profile Management**: Users can view their statistics, manage account settings, and view transaction history.
+- **Cryptocurrency Transactions**: Integrated with CoinPayments for handling deposits and withdrawals.
 
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install
-```
+## Tech Stack
 
-### Development Server
+- **Next.js**: React framework for server-side rendering and static site generation.
+- **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
+- **Socket.IO**: Real-time communication for interactive gameplay.
+- **TypeScript**: Strongly typed JavaScript for improved code reliability.
+- **Axios**: HTTP client for communicating with the backend API.
 
-Then, run the development server:
+## Prerequisites
+
+Before running the frontend locally, make sure you have:
+
+- Node.js (v18.x or above)
+- Backend API running (from the [77Roll Backend](https://github.com/cuteanbogdan/77roll-backend))
+
+## Setup
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/cuteanbogdan/77roll-frontend.git
+   cd 77roll-frontend
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables**:
+   Create a `.env.local` file in the root directory and add the necessary environment variables (see [Environment Variables](#environment-variables)).
+
+## Running the App
+
+To start the frontend app in development mode:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app should now be running on `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Running in Production Mode
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Deployment
-
-Coming Soon
-
-### Build and Start
-
-For production deployment, build the application and start the server:
+To build and start the frontend app in production mode:
 
 ```bash
 npm run build
 npm start
-# or
-yarn build
-yarn start
-# or
-pnpm build
-pnpm start
-# or
-bun build
-bun start
 ```
 
-## Technologies Used
+## Environment Variables
 
-This project is built with the following technologies:
+You need to define the following environment variables in the `.env.local` file:
 
-- [Next.js](https://nextjs.org/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [Typescript](https://www.typescriptlang.org/)
-- [Socket.io](https://socket.io/)
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/cuteanbogdan/77roll-frontend) if you want to contribute.
-
-## Author
-
-**Bogdan Cutean**
-
-- GitHub: [@cuteanbogdan](https://github.com/cuteanbogdan)
-- LinkedIn: [Bogdan Cutean](https://www.linkedin.com/in/cuteanbogdan/)
+```env
+NEXT_PUBLIC_BACKEND_URL=<Your backend URL, e.g., http://localhost:8080>
+```
