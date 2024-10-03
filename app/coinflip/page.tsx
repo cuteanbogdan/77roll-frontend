@@ -68,8 +68,8 @@ const CoinflipPage: React.FC = () => {
           logout={logout}
         />
 
-        <div className="flex flex-1">
-          <div className="w-full md:w-1/5 p-4 h-[90vh] overflow-y-auto bg-gray-800 rounded-lg">
+        <div className="flex flex-col md:flex-row flex-1">
+          <div className="w-full md:w-1/5 p-4 h-[50vh] md:h-[90vh] overflow-y-auto bg-gray-800 rounded-lg mb-4 md:mb-0">
             <Chat user={user} state={stateMessages} />
           </div>
 

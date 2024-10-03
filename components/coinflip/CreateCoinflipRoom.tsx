@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaCoins } from "react-icons/fa";
 
 const CreateCoinflipRoom: React.FC<{
@@ -38,8 +38,8 @@ const CreateCoinflipRoom: React.FC<{
   };
 
   return (
-    <div className="flex items-center space-x-2 bg-gray-800 p-4 rounded-lg w-full mb-4">
-      <div className="flex items-center bg-gray-700 p-2 rounded-lg flex-grow">
+    <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 bg-gray-800 p-4 rounded-lg w-full mb-4">
+      <div className="flex items-center bg-gray-700 p-2 rounded-lg flex-grow w-full md:w-auto">
         <FaCoins className="text-yellow-500 mr-2" />
         <input
           type="number"
@@ -51,7 +51,8 @@ const CreateCoinflipRoom: React.FC<{
           max="100"
         />
       </div>
-      <div className="flex space-x-2">
+
+      <div className="flex flex-wrap justify-center gap-2 w-full md:w-auto">
         <button
           onClick={() => setChoice("heads")}
           className={`px-4 py-2 rounded-lg ${
@@ -112,7 +113,7 @@ const CreateCoinflipRoom: React.FC<{
         </button>
         <button
           onClick={handleCreateRoom}
-          className="bg-green-500 text-white px-4 py-2 rounded-lg"
+          className="bg-green-500 text-white px-4 py-2 rounded-lg w-full md:w-auto"
         >
           Create Room
         </button>
