@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import SocketService from "@/services/socketService";
 import { User } from "@/types/auth";
 import { BaseStateType } from "@/types/roulette";
@@ -10,7 +10,6 @@ interface ChatProps {
 
 const Chat: React.FC<ChatProps> = ({ user, state }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState("");
 
   const handleSendMessage = () => {
@@ -40,7 +39,7 @@ const Chat: React.FC<ChatProps> = ({ user, state }) => {
   };
 
   return (
-    <div className="chat-container bg-gray-900 text-white p-4 rounded-lg h-[86vh] flex flex-col">
+    <div className="chat-container bg-gray-900 text-white p-4 rounded-lg flex flex-col h-full max-h-[86vh]">
       <div className="chat-header flex justify-between mb-4">
         <h2 className="text-lg font-bold">English Room</h2>
         <span>581 / 830</span>
@@ -68,7 +67,7 @@ const Chat: React.FC<ChatProps> = ({ user, state }) => {
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} />
+        <div />
       </div>
 
       <div className="chat-input mt-4 flex items-center relative">
@@ -77,7 +76,7 @@ const Chat: React.FC<ChatProps> = ({ user, state }) => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-grow p-2 bg-gray-800 rounded-l-lg focus:outline-none"
+          className="flex-grow p-2 bg-gray-800 rounded-l-lg focus:outline-none text-sm"
           placeholder="Type a message..."
         />
         <div className="relative">
@@ -88,7 +87,7 @@ const Chat: React.FC<ChatProps> = ({ user, state }) => {
             &#x22EE;
           </button>
           {isDropdownOpen && (
-            <div className="absolute bottom-full right-0 mb-2 w-[20rem] bg-gray-800 border border-gray-700 rounded shadow-lg">
+            <div className="absolute bottom-full right-0 mb-2 w-[12rem] bg-gray-800 border border-gray-700 rounded shadow-lg z-50">
               <ul className="py-1">
                 <li className="block px-4 py-2 text-sm text-white hover:bg-gray-700 cursor-pointer">
                   Option 1
