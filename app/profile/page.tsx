@@ -52,58 +52,53 @@ const ProfileContent: React.FC = () => {
         user={user}
         logout={logout}
       />
-      <div className="flex max-w-7xl mx-auto py-8">
-        <div className="w-1/4 bg-gray-800 p-4 rounded-lg">
+      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto py-8">
+        <div className="w-full lg:w-1/4 bg-gray-800 p-4 rounded-lg mb-4 lg:mb-0">
           <h2 className="text-lg font-bold mb-4">Profile</h2>
           <ul>
             <li className="mb-2">
-              <a
-                href="#"
-                className={`block p-2 bg-gray-700 rounded hover:bg-gray-600 ${
+              <button
+                className={`block w-full text-left p-2 bg-gray-700 rounded hover:bg-gray-600 ${
                   activeSection === "details" ? "bg-gray-600" : ""
                 }`}
                 onClick={() => setActiveSection("details")}
               >
                 Details
-              </a>
+              </button>
             </li>
             <li className="mb-2">
-              <a
-                href="#"
-                className={`block p-2 bg-gray-700 rounded hover:bg-gray-600 ${
+              <button
+                className={`block w-full text-left p-2 bg-gray-700 rounded hover:bg-gray-600 ${
                   activeSection === "transactions" ? "bg-gray-600" : ""
                 }`}
                 onClick={() => setActiveSection("transactions")}
               >
                 Transactions
-              </a>
+              </button>
             </li>
             <li className="mb-2">
-              <a
-                href="#"
-                className={`block p-2 bg-gray-700 rounded hover:bg-gray-600 ${
+              <button
+                className={`block w-full text-left p-2 bg-gray-700 rounded hover:bg-gray-600 ${
                   activeSection === "deposit" ? "bg-gray-600" : ""
                 }`}
                 onClick={() => setActiveSection("deposit")}
               >
                 Deposit
-              </a>
+              </button>
             </li>
             <li className="mb-2">
-              <a
-                href="#"
-                className={`block p-2 bg-gray-700 rounded hover:bg-gray-600 ${
+              <button
+                className={`block w-full text-left p-2 bg-gray-700 rounded hover:bg-gray-600 ${
                   activeSection === "withdraw" ? "bg-gray-600" : ""
                 }`}
                 onClick={() => setActiveSection("withdraw")}
               >
                 Withdraw
-              </a>
+              </button>
             </li>
           </ul>
         </div>
-
-        <div className="w-3/4 ml-8 bg-gray-800 p-6 rounded-lg">
+        <div className="w-full lg:ml-8 lg:w-3/4 bg-gray-800 p-6 rounded-lg">
           {activeSection === "details" && (
             <>
               <ProfileHeader user={user} onOpenModal={handleOpenModal} />
