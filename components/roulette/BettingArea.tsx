@@ -33,11 +33,13 @@ const BettingArea: React.FC<{
 
   return (
     <div className="text-white">
-      <div className="flex justify-between gap-4">
+      <div className="flex flex-col lg:flex-row justify-between gap-4">
         {betAreas.map((area) => (
           <div
             key={area.color}
-            className={`w-1/3 rounded border-2 ${area.borderColor} ${
+            className={`w-full lg:w-1/3 rounded border-2 ${
+              area.borderColor
+            } mb-4 lg:mb-0 ${
               !bettingOpen ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -61,7 +63,7 @@ const BettingArea: React.FC<{
                 {area.multiplier}
               </div>
             </button>
-            <div className="bg-black-500 bg-opacity-50 p-2 rounded-b-md h-64 overflow-y-auto">
+            <div className="bg-black-500 bg-opacity-50 p-2 rounded-b-md h-48 overflow-y-auto">
               {bets
                 .filter((bet) => bet.color === area.color)
                 .map((bet, index) => (

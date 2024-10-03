@@ -66,15 +66,16 @@ const HomePage: React.FC = () => {
           logout={logout}
         />
 
-        <div className="flex flex-1">
-          <div className="w-full md:w-1/5 p-4 h-[90vh] overflow-y-auto bg-gray-800 rounded-lg">
+        <div className="flex flex-1 flex-col lg:flex-row">
+          <div className="w-full lg:w-1/5 p-2 sm:p-4 h-[50vh] sm:h-[70vh] lg:h-[90vh] overflow-y-auto bg-gray-800 rounded-lg mb-4 lg:mb-0">
             <Chat user={user} state={stateMessages} />
           </div>
 
-          <div className="flex flex-col w-full md:w-3/4">
-            <main className="relative w-full max-w-5xl mx-auto bg-gray-900">
+          <div className="flex flex-col w-full lg:w-4/5">
+            <main className="relative w-full max-w-5xl mx-auto bg-gray-900 p-2 sm:p-4">
               <GameInfo roundNumber={state.roundNumber} />
-              <div className="flex justify-center mx-auto overflow-hidden mb-8">
+
+              <div className="flex justify-center mx-auto overflow-hidden mb-4">
                 <RouletteDisplay
                   numbers={rouletteNumbers}
                   targetNumber={state.targetNumber}
@@ -83,11 +84,12 @@ const HomePage: React.FC = () => {
                   loading={loading}
                 />
               </div>
-              <div className="flex justify-center">
+
+              <div className="flex justify-center mb-2 sm:mb-4">
                 <HistoryArea history={state.history} />
               </div>
 
-              <div className="py-4 bg-gray-900 flex justify-center items-center mb-2 w-full">
+              <div className="py-2 sm:py-4 bg-gray-900 flex justify-center items-center w-full">
                 <BettingControl
                   betAmount={betAmount}
                   setBetAmount={setBetAmount}
